@@ -1,0 +1,63 @@
+%%% appbib.tex --- Додатки перед списком використаних джерел
+
+% ВАК змінила порядок структурних частин дисертації: спочатку додатки,
+% потім список використаних джерел (Бюлетень ВАК України, 2007, № 6,
+% С. 9). Тому команда \appendix, розміщена перед першим додатком,
+% тепер впливатиме і на список. Тут описано, як уникнути цього.
+
+% Олександр Червинський запитував про це 2009/07/16.
+
+% Потрібний код користувач має взяти з цього файла і помістити у
+% преамбулу свого документа або у свій .sty-файл. Цей файл є лише
+% зразком і не може використовуватися безпосередньо з класом
+% vakthesis.
+
+% Перевірено з vakthesis v0.08 від 2009/04/01.
+
+% Оточення filecontents генерують файли, які далі включаються до
+% головного файла.
+
+\begin{filecontents}{appbib-cha1.tex}
+\chapter{Назва розділу}
+Текст
+\end{filecontents}
+
+\begin{filecontents}{appbib-app1.tex}
+\chapter{Назва додатка}
+Текст
+\end{filecontents}
+
+\begin{filecontents}{appbib-cha2.tex}
+\chapter*{Назва розділу після додатків}
+Текст
+\end{filecontents}
+
+% Головний файл починається тут.
+
+\documentclass{vakthesis}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+
+% Можливі два способи:
+% 1) вкласти додатки в групу;
+% 2) означити спеціальне оточення у преамбулі документа, а потім у
+% тексті вкладати додатки в це оточення; цей спосіб розглядається тут.
+
+\newenvironment{theappendix}{%
+  \appendix
+}{}
+
+\begin{document}
+
+\tableofcontents
+
+\include{appbib-cha1}
+\begin{theappendix}
+  \include{appbib-app1}
+% інші додатки
+\end{theappendix}
+\include{appbib-cha2}
+
+\end{document}

@@ -1,0 +1,110 @@
+%%% orgcaption.tex --- Відновлення оригінального заголовка таблиць
+
+% Класи vakthesis/vakaref жорстко прописують оформлення заголовка
+% таблиці в командах \@maketablecaption, \LT@makecaption тощо.
+% Причому, деякі зміни зроблено за допомогою \AtBeginDocument, тобто
+% зміни, які користувач міг зробити за допомогою сторонніх пакунків,
+% будуть проігноровані.  Через це, зокрема, неможливо використовувати
+% пакунок caption з цими класами.  Можливо, найпростіший спосіб
+% уникнути цього конфлікту — відкинути зміни, які роблять класи
+% vakthesis/vakaref в оформленні таблиць, і використовувати для цього
+% можливості caption.
+
+% vlamor запитував про це 2015/01/27.
+% (http://linux.org.ua/cgi-bin/yabb/YaBB.pl?num=1229461517/224#224).
+
+% Потрібний код користувач має взяти з цього файла і помістити у
+% преамбулу свого документа або у свій .sty-файл.  Цей файл є лише
+% зразком і не може використовуватися безпосередньо з класами
+% vakthesis/vakaref.
+
+% Перевірено з vakthesis/vakaref v0.08 від 2009/04/01.
+
+\documentclass{vakthesis}
+% \documentclass{vakaref}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage[labelsep=endash]{caption}
+
+\makeatletter
+% Зберігаємо ті означення команд, які були на час виклику caption
+\let\ORG@makecaption\@makecaption
+\let\ORGlongtable\longtable
+\let\ORGLT@makecaption\LT@makecaption
+% «На початку документа», після змін, які зробили і клас, і пакунки,
+% відновлюємо означення команд, які були на час виклику caption
+\AtBeginDocument{%
+  \let\@maketablecaption\ORG@makecaption
+  \let\longtable\ORGlongtable
+  \let\LT@makecaption\ORGLT@makecaption
+}
+\makeatother
+
+\begin{document}
+
+% Зразок рухомої таблиці
+% Змінений зразок з документації vakthesis
+\begin{table}[htbp]
+\caption{Назва таблиці}
+\begin{tabularx}{\textwidth}{|X|c|c|c|}
+\hline
+                  &Еліпс&Гіпербола&Парабола\\
+\hline
+Канонічне рівняння&1    &2        &3       \\
+Ексцентриситет    &4    &5        &6       \\
+Фокуси            &7    &8        &9       \\
+\hline
+\end{tabularx}
+\end{table}
+
+% Зразок довгої таблиці (може простягатися більш ніж на одну сторінку)
+% Змінений зразок з документації longtable
+\begin{longtable}{@{*}r||p{1in}@{*}}
+\caption[An optional table caption ...]{A long table\label{long}}\\
+\hline\hline
+\multicolumn{2}{@{*}c@{*}}%
+{This part appears at the top of the table}\\
+\textsc{First}&\textsc{Second}\\
+\hline\hline
+\endfirsthead
+\caption[]{(continued)}\\
+\hline\hline
+\multicolumn{2}{@{*}c@{*}}%
+{This part appears at the top of every other page}\\
+\textbf{First}&\textbf{Second}\\
+\hline\hline
+\endhead
+\hline
+This goes at the&bottom.\\
+\hline
+\endfoot
+\hline
+These lines will&appear\\
+in place of the & usual foot\\
+at the end& of the table\\
+\hline
+\endlastfoot
+longtable columns are specified& in the \\
+same way as in the tabular& environment.\\
+\hline
+\multicolumn{2}{||c||}{This is a ...}\\
+\hline
+Some lines may take...&
+\raggedleft This last column is a ``p'' column...
+\tabularnewline
+\hline
+Lots of lines& like this.\\
+\hline
+Lots\footnote{...} of lines& like this.\\
+Lots of lines& like this\footnote{...}\\
+\hline
+Lots of lines& like this.\\
+\hline
+\end{longtable}
+
+\end{document}

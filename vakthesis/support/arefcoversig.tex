@@ -1,0 +1,125 @@
+%%% arefcoversig.tex --- Підпис ученого секретаря на обкладинці автореферату
+
+% Інколи виникає потреба зісканувати підпис ученого секретаря і
+% помістити зображення на обкладинку автореферату.  Оскільки клас
+% vakaref збирає обкладинку з наданої інформації, безпосередньо додати
+% команду типу \includegraphics неможливо.  А команда \secretary поки
+% що не має відповідної функціональності. Тому виникає потреба
+% переозначувати команду \@makereverse (насправді достатньо додати
+% один рядок).
+
+% Багато людей запитувало про це у різний час, зокрема на форумі ЛОУ:
+% http://linux.org.ua/index.php?topic=689.msg68193#msg68193,
+% http://linux.org.ua/index.php?topic=689.msg200078#msg200078.
+
+% Потрібний код користувач має взяти з цього файла і помістити у
+% преамбулу свого документа або у свій .sty-файл.  Цей файл є лише
+% зразком і не може використовуватися безпосередньо з класами
+% vakthesis/vakaref.
+
+% Перевірено з vakaref v0.08 від 2009/04/01.
+
+\documentclass{vakaref}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+
+\usepackage[demo]{graphicx}
+% Ніякого файла з підписом ученого секретаря в комплекті немає.  Опція
+% demo дозволяє отримати чорний прямокутник на місці підпису і
+% уникнути повідомлення про помилку.
+
+\usepackage{geometry}
+\geometry{total={11cm,17cm},includehead}
+
+\makeatletter
+\def\@makereverse{%
+  \CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrie\cyryu\
+    \cyrie\ \@thesistype.\par
+  \CYRR\cyro\cyrb\cyro\cyrt\cyra\
+    \cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrn\cyra\ \cyrv\
+    \transformsentence{L}{\@institution}
+    \if\@institution@office\ignorespaces
+    \else\
+    \transformsentence{G}{\@institution@office}
+    \fi
+    .\par
+  {\let\\\@format@person
+   \ifx\@supervisors\@empty
+   \else
+     \begin{listofpersons}{\@supervisors@caption}
+       \@supervisors\relax
+     \end{listofpersons}
+   \fi
+   \begin{listofpersons}{\@opponents@caption}
+     \@opponents\relax
+   \end{listofpersons}}%
+  \@ifundefined{@linstitution}{}{%
+    \CYRP\cyrr\cyro\cyrv\cyrii\cyrd\cyrn\cyra\ \cyru\cyrs\cyrt\cyra\cyrn\cyro\cyrv\cyra:\
+    \@linstitution, \@linstitution@town.\par}
+  \vfill%\vspace{30pt plus 30pt minus 30pt}%
+  \CYRZ\cyra\cyrh\cyri\cyrs\cyrt\
+    \cyrv\cyrii\cyrd\cyrb\cyru\cyrd\cyre\cyrt\cyrsftsn\cyrs\cyrya\
+    \@ifundefined{@defencedate}{\typedateholder}
+      {\expandafter\typedate\@defencedate\@nil}%
+    \ \cyro\
+    \@ifundefined{@defencetime}{\typetimeholder}
+      {\expandafter\typetime\@defencetime\@nil}%
+\ \cyrn\cyra\ \cyrz\cyra\cyrs\cyrii\cyrd\cyra\cyrn\cyrn\cyrii\
+    \cyrs\cyrp\cyre\cyrc\cyrii\cyra\cyrl\cyrii\cyrz\cyro\cyrv\cyra\cyrn\cyro\cyryi\
+    \cyrv\cyrch\cyre\cyrn\cyro\cyryi\ \cyrr\cyra\cyrd\cyri\
+    \@council@code\ \transformsentence{G}{\@council@institution}
+    \ \cyrz\cyra\ \cyra\cyrd\cyrr\cyre\cyrs\cyro\cyryu:
+    \@council@address.\par
+  \vfil%\smallskip
+  \ifx\@library@institution\@empty
+    \let\@library@institution\@council@institution
+  \fi
+  \CYRZ\ \cyrd\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrie\cyryu\
+    \cyrm\cyro\cyrzh\cyrn\cyra\
+    \cyro\cyrz\cyrn\cyra\cyrishrt\cyro\cyrm\cyri\cyrt\cyri\cyrs\cyrsftsn\
+    \cyru\ \cyrb\cyrii\cyrb\cyrl\cyrii\cyro\cyrt\cyre\cyrc\cyrii\
+    \transformsentence{G}{\@library@institution}
+    \@ifundefined{@library@address}{.\par}
+      {\ \cyrz\cyra\ \cyra\cyrd\cyrr\cyre\cyrs\cyro\cyryu:
+       \@library@address.\par}
+  \vfill%\vspace{10pt plus 10pt minus 10pt}%
+  \CYRA\cyrv\cyrt\cyro\cyrr\cyre\cyrf\cyre\cyrr\cyra\cyrt\
+    \cyrr\cyro\cyrz\cyrii\cyrs\cyrl\cyra\cyrn\cyri\cyrishrt\
+    \@ifundefined{@postdate}{\typedateholder}
+      {\expandafter\typedate\@postdate\@nil}\par
+  \vfill%\vspace{20pt plus 20pt minus 20pt}%
+  \CYRU\cyrch\cyre\cyrn\cyri\cyrishrt\
+  \cyrs\cyre\cyrk\cyrr\cyre\cyrt\cyra\cyrr\newline
+  \cyrs\cyrp\cyre\cyrc\cyrii\cyra\cyrl\cyrii\cyrz\cyro\cyrv\cyra\cyrn\cyro\cyryi\
+  \cyrv\cyrch\cyre\cyrn\cyro\cyryi\ \cyrr\cyra\cyrd\cyri\hfill
+  %\placeholder{\cyrp\cyrii\cyrd\cyrp\cyri\cyrs}\quad
+  \raisebox{-5pt}[0pt][0pt]{\includegraphics[width=50pt,height=20pt]{pysarenko-sig}}\hfill% <--- додано
+  % Змінюючи параметри, можна підігнати потрібні характеристики
+  % зображення: очевидно, width відповідає за ширину зображення, а
+  % перший аргумент команди \raisebox зміщує зображення вгору чи вниз
+  % (якщо аргумент додатний чи від’ємний відповідно).  Можна взагалі
+  % забрати height, тоді розміри зображення зміняться зі збереженням
+  % відношення ширини до висоти.
+  \@secretary\par}
+\makeatother
+
+\begin{document}
+
+\title{Теоретико-неймовірнісний підхід до~дослідження регулярних дендритоморфізмів}
+\author{Авторенко Богдан Володимирович}
+\supervisor{Керівничук Григорій Дмитрович}
+  {доктор фізико-математичних наук, професор}
+  {Національний фантастичний університет,
+   професор кафедри теорії неймовірностей}
+\speciality{01.01.01}
+\opponent{Опонентович Едуард Євгенович}
+  {доктор фізико-математичних наук, професор}
+  {Київський національний університет сучасних технологій,
+   завідувач кафедри телепортації}
+\secretary{Писаренко~Ю.",Я.}
+
+\maketitle
+
+\end{document}

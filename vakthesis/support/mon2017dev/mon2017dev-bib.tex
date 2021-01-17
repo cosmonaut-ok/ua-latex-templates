@@ -1,0 +1,30 @@
+%% mon2017dev-bib.tex  Приклад списку використаних джерел (для mon2017dev.tex)
+
+% TODO: Це потрібно для статті Sie11STNW з файла xampl-thesis.bib.
+% Ці команди жорстко прописані у полі note.
+% Треба зробити зразок без цього.
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\selectlanguage{#1}\fi}
+\providecommand*{\BibEmph}[1]{#1}
+
+\begin{bibset}{Список використаних джерел}
+  % \bibliographystyle{gost2008s}
+  % Спробуємо Springer MathPhys Style
+  \bibliographystyle{spmpsci}
+  % Manuscript preparation
+  % https://www.springer.com/gp/authors-editors/book-authors-editors/manuscript-preparation/5636
+  % > LaTeX template
+  %   http://resource-cms.springer.com/springer-cms/rest/v1/content/20566/data/v3/monographs
+  % Помітив тільки, що стиль не вміє (як gost) підставляти службові слова
+  % українською мовою і різними мовами залежно від мови публікації,
+  % типу перед сторінками для статті у збірнику завжди буде pp. (pages)
+  % або In: Назва збірника
+  % (але це очікувано).
+  %
+  % Якщо не треба нумерація з крапкою, можна закоментувати наступні три рядки.
+  \makeatletter
+  \renewcommand\@biblabel[1]{#1.}
+  \makeatother
+  \bibliography{xampl-thesis,xampl-mybib}
+\end{bibset}

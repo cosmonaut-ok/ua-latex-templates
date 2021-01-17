@@ -1,0 +1,128 @@
+%%% tocupch.tex --- ЗАГОЛОВКИ РОЗДІЛІВ у змісті
+
+% Описано, як зробити, щоб vakthesis/vakaref писав великими літерами
+% заголовки розділів/структурних частин у змісті.
+
+% Сергій Лисовенко запитував про це 2009/04/27 (http://linux.org.ua/cgi-bin/yabb/YaBB.pl?num=1229461517/24#24).
+% Олександр Червинський повідомив 2010/02/26, що це не впливає на
+% заголовок списку використаних джерел, якщо додатки розміщено перед
+% списком. Тому необхідно ще переозначити команду \bibname перед
+% бібліографією.
+
+% Потрібний код користувач має взяти з цього файла і помістити у
+% преамбулу свого документа або у свій .sty-файл. Цей файл є лише
+% зразком і не може використовуватися безпосередньо з класом
+% vakthesis.
+
+% Перевірено з vakthesis v0.08 від 2009/04/01.
+
+% Оточення filecontents генерують три файли: розділ, додаток і список
+% використаних джерел, які далі включаються до головного
+% файла. Запропонована техніка не працюватиме, якщо команди \chapter
+% містяться безпосередньо в головному файлі.
+
+\begin{filecontents}{tocupch-cha1.tex}
+\chapter{Назва розділу}
+\section{Назва підрозділу}
+Текст
+\end{filecontents}
+
+\begin{filecontents}{tocupch-app1.tex}
+\chapter{Назва додатка}
+Текст
+\end{filecontents}
+
+\begin{filecontents}{tocupch-bib.tex}
+\renewcommand{\bibname}{СПИСОК ВИКОРИСТАНИХ ДЖЕРЕЛ}% <--- додано
+% для списку використаних джерел після додатків
+\begin{thebibliography}{9}
+\bibitem{TST10} Тест
+\end{thebibliography}
+\end{filecontents}
+
+% Головний файл починається тут.
+
+\documentclass{vakthesis}
+% \documentclass{vakaref}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+
+\makeatletter
+
+% Двічі додано команду \@make@chapapp. Перший раз --- щоб забезпечити
+% необхідну ширину. Другий --- для форматування заголовка. Команда
+% \@make@chapapp пише свій аргумент великими і ще робить деяку
+% допоміжну роботу.
+
+\renewcommand*\l@chapter[2]{%
+  \ifnum \c@tocdepth >\m@ne
+    \addpenalty{-\@highpenalty}%
+    \vskip 1.0ex \@plus\p@
+    \settowidth\@tempdima{\@make@chapapp{\@chapapp}\nobreakspace}% <--- змінено
+    \addtolength\@tempdima{\@appendix@number@width}%
+    \addtolength\@tempdima{1.5em}%
+    \begingroup
+      \parindent \z@ \rightskip \@tocrmarg
+      \parfillskip -\rightskip
+      \leavevmode \bfseries
+      \advance\leftskip\@tempdima
+      \hskip -\leftskip
+      \@make@chapapp{#1}\nobreak\hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par% <--- змінено
+      \penalty\@highpenalty
+    \endgroup
+  \fi}
+
+% Але зроблені зміни впливають також на заголовки додатків. Оскільки
+% вони не пишуться великими у тексті, то, мабуть, не повинні бути
+% такими і у змісті. Тому додаємо переозначення команди \@make@chapapp
+% тут.
+
+\def\@toc@appendices#1{\@writefile{toc}{%
+  \def\@chapapp{\appendixname}^^J%
+  \let\@make@chapapp\relax^^J% <--- додано
+  \def\@appendix@number@width{.5em}}}
+
+% Щоб зробити зміст у авторефераті так, що заголовки структурних
+% частин автореферату пишуться великими, необхідно переозначити
+% \l@part.
+
+% \renewcommand*\l@part[2]{%
+%   \ifnum \c@tocdepth >-2\relax
+%     \addpenalty{-\@highpenalty}%
+%     \addvspace{1.0ex \@plus\p@}%
+%     \setlength\@tempdima{3em}%
+%     \begingroup
+%       \parindent \z@ \rightskip \@tocrmarg
+%       \parfillskip -\rightskip
+%       {\leavevmode
+%        \@make@chapapp{#1}\hfil \hb@xt@\@pnumwidth{\hss #2}}\par% <--- змінено
+%        \nobreak
+%          \global\@nobreaktrue
+%          \everypar{\global\@nobreakfalse\everypar{}}%
+%     \endgroup
+%   \fi}
+
+\makeatother
+
+\begin{document}
+
+% Тут буде зміст.
+
+\tableofcontents
+
+% Для дисертації:
+
+\include{tocupch-cha1}
+
+{\appendix
+\include{tocupch-app1}}
+
+\include{tocupch-bib}
+
+% Для автореферату:
+
+% \part{Загальна характеристика роботи}
+
+\end{document}

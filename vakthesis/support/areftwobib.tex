@@ -1,0 +1,169 @@
+%%% areftwobib.tex --- Два списки літератури в авторефераті
+
+% Інколи два списки літератури потрібні в авторефераті, а не тільки в
+% дисертації: список джерел, цитованих у розділі «Загальна
+% характеристика роботи», і список опублікованих праць за темою
+% дисертації. Відповідний код майже дослівно можна перенести з класу
+% vakthesis.
+
+% Єгор Вехов запитував про це 2009/09/26.
+% dgizer переносив означення bibset в клас vakaref 2012/07/04
+% (http://linux.org.ua/cgi-bin/yabb/YaBB.pl?num=1229461517/200#200).
+% physicsworks теж запитував про відповідні зміни в класі vakaref
+% 2013/02/11
+% (http://linux.org.ua/cgi-bin/yabb/YaBB.pl?num=1229461517/211#211).
+
+% Потрібний код користувач має взяти з цього файла і помістити у
+% преамбулу свого документа або у свій .sty-файл. Цей файл є лише
+% зразком і не може використовуватися безпосередньо з класом vakaref.
+
+% Перевірено з vakaref v0.08 від 2009/04/01.
+
+% Оточення filecontents генерують файли, які далі включаються до
+% головного файла.
+
+\begin{filecontents}{areftwobib-thesis.bib}
+@Article{riemann90,
+  author =	 {L. Riemann},
+  title =	 {Properties of the function},
+  journal =	 {Math. J.},
+  year =	 1990,
+  volume =	 30,
+  number =	 12,
+  pages =	 {123--132}
+}
+\end{filecontents}
+
+\begin{filecontents}{areftwobib-mybib.bib}
+@Article{thor09,
+  author =	 {A. U. Thor},
+  title =	 {Title of the article},
+  journal =	 {Test J.},
+  year =	 2009,
+  volume =	 3,
+  number =	 1,
+  pages =	 {23--45}
+}
+\end{filecontents}
+
+% Головний файл починається тут.
+
+\documentclass{vakaref}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+\usepackage{amsmath}
+
+% Додати цей код у преамбулу свого документа або у свій .sty-файл.
+% Сгенерувати списки літератури так само, як при використанні класу
+% vakthesis (див. розділ 4.7 документації, с. 10).
+
+\makeatletter
+\def\@bibmark{}
+\renewenvironment{thebibliography}[1]
+     {\part{\bibname}%
+      \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
+      \list{\@biblabel{\@arabic\c@enumiv\@bibmark}}%
+           {\settowidth\labelwidth{\@biblabel{#1\@bibmark}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \renewcommand\theenumiv{\@arabic\c@enumiv\@bibmark}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+     }
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\newcounter{needbibset}
+\setcounter{needbibset}{1}
+\newcounter{currbibset}
+\newenvironment{bibset}[2][]
+  {\stepcounter{currbibset}%
+   \def\@temp{#1}%
+   \ifx\@temp\@empty
+     \def\@bibmark{\relax}%
+   \else
+     \def\@bibmark{\textsuperscript{#1}}%
+   \fi
+   \let\@sav@lbibitem\@lbibitem
+   \def\@lbibitem[##1]##2{\@sav@lbibitem[##1\@bibmark]{##2}}%
+   \@ifundefined{hyper@warn}
+     {\def\@bibitem##1{\item\if@filesw \immediate\write\@auxout
+        {\string\bibcite{##1}{\the\value{\@listctr}\expandafter\string\@bibmark}}%
+        \fi\ignorespaces}}
+     {\def\@bibitem##1{%
+      \@skiphyperreftrue\H@item\@skiphyperreffalse
+      \hyper@anchorstart{cite.##1}\relax\hyper@anchorend
+      \if@filesw {\let\protect\noexpand
+      \immediate\write\@auxout{%
+        \string\bibcite{##1}{\the\value{\@listctr}\expandafter\string\@bibmark}}}%
+      \fi
+      \ignorespaces}}%
+   \def\bibname{#2}%
+   \let\bibliography\@thisbibliography
+   \let\bibliographystyle\@thisbibliographystyle}
+  {\ifnum\thecurrbibset=\theneedbibset
+     \ifnum\theneedbibset=1
+       \immediate\write\@auxout{\string\setcounter{needbibset}{2}}%
+     \else
+       \immediate\write\@auxout{\string\setcounter{needbibset}{1}}%
+     \fi
+   \fi}
+\def\@thisbibliography#1{%
+  \if@filesw
+    \ifnum\thecurrbibset=\theneedbibset
+      \immediate\write\@auxout{\string\bibdata{#1}}%
+    \else
+      \immediate\write\@auxout{\@percentchar\string\bibdata{#1}}%
+    \fi
+  \fi
+  \@input@{\jobname\thecurrbibset.bbl}}
+\def\@thisbibliographystyle#1{%
+  \ifx\@begindocumenthook\@undefined\else
+    \expandafter\AtBeginDocument
+  \fi
+    {\if@filesw
+       \ifnum\thecurrbibset=\theneedbibset
+         \immediate\write\@auxout{\string\bibstyle{#1}}%
+       \else
+         \immediate\write\@auxout{\@percentchar\string\bibstyle{#1}}%
+       \fi
+     \fi}%
+  \ifthenelse
+  {\equal{#1}{plain}\or\equal{#1}{unsrt}\or\equal{#1}{abbrv}\or
+   \equal{#1}{amsplain}\or
+   \equal{#1}{gost71s}\or\equal{#1}{gost71u}\or\equal{#1}{gost780s}\or\equal{#1}{gost780u}}
+  {\def\@biblabel##1{##1.}}
+  {\def\@biblabel##1{[##1]}}}
+\makeatother
+
+\begin{document}
+
+\part{Загальна характеристика роботи}
+
+\paragraph{Актуальність теми}
+
+Як доведено в статті~\cite{riemann90}, функція $f(x)$ має фрактальні
+властивості\ldots
+
+\paragraph{Публікації}
+
+Основні результати розділу~2 опубліковані в статті~\cite{thor09}\ldots
+
+\begin{bibset}{Список цитованих джерел}
+\bibliographystyle{gost71s}
+\bibliography{areftwobib-thesis}
+\end{bibset}
+
+\begin{bibset}[a]{Список опублікованих праць за темою дисертації}
+\bibliographystyle{gost71u}
+\bibliography{areftwobib-mybib}
+\end{bibset}
+
+\end{document}

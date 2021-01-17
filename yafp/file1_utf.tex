@@ -1,0 +1,282 @@
+\documentclass{report}
+
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\usepackage{hyperref}
+
+\usepackage{yafp}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\theoremstyle{remark}
+\newtheorem{lemma}[theorem]{Lemma}%[chapter]
+
+%\def\eqref#1{(\ref{#1})}
+
+\begin{document}
+
+\chapter*{Intro}
+
+\begin{equation}\label{eq:intro1}
+f(x)=a_0+a_1x
+\end{equation}
+
+\begin{theorem}\label{thm:intro1}
+Start start start start start.
+\end{theorem}
+
+EXCERPT BEGINS HERE.\hrulefill
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{yafea}
+
+\begin{equation}\label{eq:equation}
+x^2 \neq x^3
+\end{equation}
+
+\begin{lemma}\label{lem:bbb}
+Text text text text, text text text text text text. Text text text text
+text text text text text.
+\end{lemma}
+
+\begin{theorem}\label{thm:two}
+Bla-bla-bla...
+\begin{equation}\label{eq:eqinthm}
+\sum_{k=1}^\infty a_k = \frac\pi2,
+\end{equation}
+Bla-bla-bla...
+\end{theorem}
+
+\begin{theorem}\label{thm:five}
+This is another great theorem.
+\end{theorem}
+
+From Theorem~\ref{thm:two} it follows...
+
+\begin{theorem}[Hardy]\label{thm:Hardy}
+If $x=y$, then~\eqref{eq:eqinthm} holds.
+\end{theorem}
+
+Оточення з пакета \texttt{amsmath}:
+gather
+\begin{gather}
+\label{eq:gather1}
+a_x=b_{11}+c_{11}\\
+\label{eq:gather2}
+a_y=b_{21}+c_{21}+d_{21}\\
+\label{eq:gather3}
+a_z=b_{31}+c_{31}
+\end{gather}
+align
+\begin{align}
+\label{eq:align1}
+a_{11}&=b_{11}, & a_{12}&=b_{12}\\
+\label{eq:align2}
+a_{21}&=b_{21}, & a_{22}&=b_{22}+c^2
+\end{align}
+flalign
+\begin{flalign}
+\label{eq:flalign1}
+a_{11}&=b_{11}, & a_{12}&=b_{12}\\
+\label{eq:flalign2}
+a_{21}&=b_{21}, & a_{22}&=b_{22}+c^2
+\end{flalign}
+
+Плаваючі об'єкти десь тут починаються...
+
+\begin{figure}[htbp]
+\emph{Тут буде другий малюнок! Дуже гарний! Кольоровий!}
+\caption{Назва малюнка 2}\label{fig:figure2}
+\end{figure}
+
+\begin{table}[htbp]
+\caption{Назва таблиці 1}\label{tab:table1}
+\emph{Тіло першої таблиці}
+\end{table}
+
+\end{yafea}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+EXCERPT ENDS HERE.\hrulefill
+
+\begin{equation}\label{eq:intro2}
+f(x)=a_0+a_1x+a_2x^2
+\end{equation}
+
+\begin{theorem}\label{thm:intro2}
+Finish finish finish finish finish.
+\end{theorem}
+
+
+\chapter{Формули стандартного \LaTeX{} і \texttt{amsmath}}
+
+Перша формула.
+\begin{equation}\label{eq:ch1first}
+x_1
+\end{equation}
+
+Формула тут
+\begin{equation}\label{eq:equation}
+x^2 \neq x^3
+\end{equation}
+
+Послідовність формул:
+\begin{eqnarray}
+\label{eq:eqnarray1}
+\sin\alpha^2+\cos\alpha^2=1\\
+\label{eq:eqnarray2}
+\sin\alpha^2+\cos\alpha^2\neq2
+\end{eqnarray}
+З формул~\eqref{eq:eqnarray1} та~\eqref{eq:eqnarray2}...
+
+\begin{equation}\label{eq:array}
+\begin{array}{lllll}
+x & 2 & 3 & 4 & 5 \\
+y & 7 & 8 & 9 & 10 \\
+\end{array}
+\end{equation}
+
+Далі \texttt{amsmath}, align.
+\begin{align}
+\label{eq:align1}
+a_{11}&=b_{11}, & a_{12}&=b_{12}\\
+\label{eq:align2}
+a_{21}&=b_{21}, & a_{22}&=b_{22}+c^2
+\end{align}
+text
+\begin{align*}
+a_{11}&=b_{11}, & a_{12}&=b_{12}\\
+a_{21}&=b_{21}, & a_{22}&=b_{22}+c^2
+\end{align*}
+gather
+\begin{gather}
+\label{eq:gather1}
+a_x=b_{11}+c_{11}\\
+\label{eq:gather2}
+a_y=b_{21}+c_{21}+d_{21}\\
+\label{eq:gather3}
+a_z=b_{31}+c_{31}
+\end{gather}
+flalign
+\begin{flalign}
+\label{eq:flalign1}
+a_{11}&=b_{11}, & a_{12}&=b_{12}\\
+\label{eq:flalign2}
+a_{21}&=b_{21}, & a_{22}&=b_{22}+c^2
+\end{flalign}
+multline
+\begin{multline}\label{eq:multline}
+x=\frac1{q_1}-\frac1{q_1q_2}+\frac1{q_1q_2q_3}-\frac1{q_1q_2q_3q_4}+\dots
+  +\frac{(-1)^{k-1}}{q_1q_2q_3q_4\dots q_k}+{}\\
+ =\Delta_{q_1,q_2,q_3,q_4,\dots,q_k,\dots}
+\end{multline}
+alignat
+\begin{alignat}{2}
+\label{eq:alignat1}
+a_{11}&=b_{11}, &\quad& a_{12}=b_{12}\\
+\label{eq:alignat2}
+a_{21}&=b_{21}, && a_{22}=b_{22}+c^2
+\end{alignat}
+split
+\begin{equation}\label{eq:split}
+\begin{split}
+x^2 &= x^3-x^4\\
+y^2 &= y^3-y^4+z^5
+\end{split}
+\end{equation}
+aligned
+\begin{equation}\label{eq:aligned}
+\left.
+\begin{aligned}
+x^2 &= x^3-x^4\\
+y^2 &= y^3-y^4+z^5
+\end{aligned}
+\right\}
+\qquad \text{Maxwell's equations}
+\end{equation}
+cases
+\begin{equation}\label{eq:cases}
+|x|=
+\begin{cases}
+x, & \text{якщо $x\geq0$},\\
+-x, & \text{якщо $x<0$}.
+\end{cases}
+\end{equation}
+
+Остання формула.
+\begin{equation}\label{eq:ch1last}
+x_n
+\end{equation}
+
+
+\chapter{Теореми}
+
+\begin{theorem}\label{thm:one}
+This is a great theorem.
+\end{theorem}
+
+\begin{theorem}\label{thm:two}
+Bla-bla-bla...
+\begin{equation}\label{eq:eqinthm}
+\sum_{k=1}^\infty a_k = \frac\pi2,
+\end{equation}
+Bla-bla-bla...
+\end{theorem}
+
+From Theorem~\ref{thm:two} it follows...
+
+\begin{theorem}[Hardy]\label{thm:Hardy}
+If $x=y$, then~\eqref{eq:eqinthm} holds.
+\end{theorem}
+
+\begin{lemma}\label{lem:aaa}
+Bla-bla-bla...
+\end{lemma}
+
+\begin{theorem}\label{thm:five}
+This is another great theorem.
+\end{theorem}
+
+\begin{lemma}\label{lem:bbb}
+Text text text text, text text text text text text. Text text text text
+text text text text text.
+\end{lemma}
+
+
+\chapter{Плаваючі об'єкти}
+
+У цьому розділі "--- приклади плаваючих об'єктів.
+
+\begin{figure}[htbp]
+\emph{Тут буде перший малюнок!}
+\caption{Назва малюнка 1}\label{fig:figure1}
+\end{figure}
+
+Текст текст текст, текст текст текст текст текст, текст текст текст.
+
+\begin{table}[htbp]
+\caption{Назва таблиці 1}\label{tab:table1}
+\emph{Тіло першої таблиці}
+\end{table}
+
+Текст текст текст текст текст текст, текст текст текст.
+
+\begin{table}[htbp]
+\caption{Назва таблиці 2}\label{tab:table2}
+\emph{Тіло другої таблиці}
+\end{table}
+
+Текст текст текст, текст текст, а текст текст текст текст.
+
+\begin{figure}[htbp]
+\emph{Тут буде другий малюнок! Дуже гарний! Кольоровий!}
+\caption{Назва малюнка 2}\label{fig:figure2}
+\end{figure}
+
+І на завершення ще трохи тексту.
+
+\end{document}

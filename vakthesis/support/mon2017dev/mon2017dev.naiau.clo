@@ -1,0 +1,263 @@
+%%% mon2017dev.naiau.clo --- Оформлення дисертації згідно з рекомендаціями НАВС
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% На сторінці спеціалізованих вчених рад (на вкладці «Нормативно-правова база»)
+% Національної академії внутрішніх справ
+%   https://www.naiau.kiev.ua/naukova-diyalnist/speczializovani-vcheni-radu/
+% доступні «Зразки оформлення документів відповідно до вимог дисертацій 2017 року»
+%   https://www.naiau.kiev.ua/naukova-diyalnist/speczializovani-vcheni-radu/zahisti-disertacij-u-specializovanih/zrazki-oformlennya-dokumentiv-vidpovidno-do-vimog-disertacij-2017-roku.pdf
+% Лапки, тире у спеціальності пишуться точно, як у зразку з наказу МОН.
+% Також деякі дрібні зміни в оформленні.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesFile{mon2017dev.naiau.clo}
+  [2019/11/16 v0.02
+   Guide option for mon2017dev (OMB)]
+% Лапки, тире точно, як у зразку з наказу МОН
+\def\set@speciality@cd{%
+  \csname @specialitysci@code@\languagename\endcsname\
+  \flqq\csname @specialitysci@name@\languagename\endcsname\frqq
+  \ifcsname @specialityedu@code@\languagename\endcsname
+    \par
+    (\csname @specialityedu@code@\languagename\endcsname\
+    \cdash---
+    \csname @specialityedu@name@\languagename\endcsname)%
+  \fi
+}
+\def\set@abstract@speciality@cd{%
+  \csname @specialitysci@code@\languagename\endcsname\
+  \flqq\csname @specialitysci@name@\languagename\endcsname\frqq
+  \ifcsname @specialityedu@code@\languagename\endcsname
+    \ (\csname @specialityedu@code@\languagename\endcsname\
+    \cdash---
+    \csname @specialityedu@name@\languagename\endcsname)%
+  \fi
+}
+% Для англійського варіанту анотації
+\AtBeginDocument{%
+  \addto\captionsenglish{%
+    \def\set@degree@c{%
+      PhD thesis in
+      \csname degreefield@tf@english\endcsname{\@specialitysci@degreefield@english}
+      (Doctor of Philosophy)%
+    }%
+    \def\set@degree@d{%
+      Doctoral thesis in
+      \csname degreefield@tf@english\endcsname{\@specialitysci@degreefield@english}%
+    }%
+  }%
+}
+% Додаткові виділення грубим шрифтом
+\def\@maketitle{%
+  \set@institutions
+  \vspace{\stretch{3}}%
+  {\raggedleft
+    \parbox[b]{165pt}{\raggedright\manuscriptname}%
+    \par}%
+  \vspace{\stretch{2}}%
+  {\bfseries\expandafter\expandafter\expandafter\emphsurname\csname @author@\languagename\endcsname \par}%
+  \vspace{\stretch{2}}%
+  {\raggedleft
+    \@ifundefined{@secret}{}{%
+      \@secret\\
+      \CYRP\cyrr\cyri\cyrm.~\No~\placeholder[5mm]\\}
+    \CYRU\CYRD\CYRK\ \@udc \par}%
+  \vspace{\stretch{1}}%
+  {\bfseries\scshape\CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrya\par}
+  {\large\bfseries\scshape \csname @title@\languagename\endcsname \par}%
+  \vspace{\stretch{1}}%
+  \set@speciality\par
+  \vspace{\stretch{1}}%
+  % Подається на здобуття наукового ступеня
+  \CYRP\cyro\cyrd\cyra\cyrie\cyrt\cyrsftsn\cyrs\cyrya\
+  \cyrn\cyra\ \cyrz\cyrd\cyro\cyrb\cyru\cyrt\cyrt\cyrya\
+  \cyrn\cyra\cyru\cyrk\cyro\cyrv\cyro\cyrg\cyro\
+  \cyrs\cyrt\cyru\cyrp\cyre\cyrn\cyrya\\
+  \set@degree\par
+  \end{center}
+  \vspace{\stretch{2}}%
+  {\small% Це не основний текст для титульного аркуша, тому зменшимо.
+    % Дисертація містить результати власних досліджень.
+    \CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrya\
+    \cyrm\cyrii\cyrs\cyrt\cyri\cyrt\cyrsftsn\
+    \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyri\
+    \cyrv\cyrl\cyra\cyrs\cyrn\cyri\cyrh\
+    \cyrd\cyro\cyrs\cyrl\cyrii\cyrd\cyrzh\cyre\cyrn\cyrsftsn.
+    % Використання ідей, результатів і текстів інших авторів мають посилання на відповідне джерело 
+    \CYRV\cyri\cyrk\cyro\cyrr\cyri\cyrs\cyrt\cyra\cyrn\cyrn\cyrya\
+    \cyrii\cyrd\cyre\cyrishrt,
+    \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyrii\cyrv\
+    \cyrii~%
+    \cyrt\cyre\cyrk\cyrs\cyrt\cyrii\cyrv\
+    \cyrii\cyrn\cyrsh\cyri\cyrh\
+    \cyra\cyrv\cyrt\cyro\cyrr\cyrii\cyrv\
+    \cyrm\cyra\cyryu\cyrt\cyrsftsn\
+    \cyrp\cyro\cyrs\cyri\cyrl\cyra\cyrn\cyrn\cyrya\
+    \cyrn\cyra\
+    \cyrv\cyrii\cyrd\cyrp\cyro\cyrv\cyrii\cyrd\cyrn\cyre\
+    \cyrd\cyrzh\cyre\cyrr\cyre\cyrl\cyro.\par
+    \medskip
+    \raggedleft
+    \placeholder[25mm]
+    \textbf{\csname @shortauthor@\languagename\endcsname}\par}
+  \vspace{\stretch{2}}%
+  {%
+   \let\\\@format@person
+   \ifcsname @supervisors@\languagename\endcsname
+     \begin{listofpersons}{\csname @supervisors@caption@\languagename\endcsname}
+       \csname @supervisors@\languagename\endcsname\relax
+     \end{listofpersons}
+   \fi
+  }%
+  \vspace{\stretch{3}}%
+  \begin{center}
+  \textbf{\csname @towni@\languagename\endcsname\ --- \@year}}
+% Автореферат
+% Додаткові виділення грубим шрифтом
+\def\@makecover{%
+  \set@institutions
+  \vspace{\stretch{3}}%
+  {\bfseries\expandafter\expandafter\expandafter\emphsurname\csname @author@\languagename\endcsname \par}%
+  \vspace{\stretch{2}}%
+  {\raggedleft \CYRU\CYRD\CYRK\ \@udc \par}%
+  \vspace{\stretch{1}}%
+  {\large\bfseries\scshape \csname @title@\languagename\endcsname \par}%
+  \vspace{\stretch{2}}%
+  \set@speciality\par
+  \vspace{\stretch{3}}%
+  \CYRA\cyrv\cyrt\cyro\cyrr\cyre\cyrf\cyre\cyrr\cyra\cyrt\linebreak[1]%
+  \cyrd\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyryi\
+    \cyrn\cyra\ \cyrz\cyrd\cyro\cyrb\cyru\cyrt\cyrt\cyrya\
+    \cyrn\cyra\cyru\cyrk\cyro\cyrv\cyro\cyrg\cyro\
+    \cyrs\cyrt\cyru\cyrp\cyre\cyrn\cyrya\linebreak[1]%
+    \set@degree\par
+  \vspace{\stretch{3}}%
+  \textbf{\ifcsname @council@town@\languagename\endcsname
+    \csname @council@town@\languagename\endcsname
+  \else
+    \csname @towni@\languagename\endcsname
+  \fi
+  \ --- \@year}}
+\def\@abstract@vakthesis{%
+% Ім'я скорочено, по батькові немає, потім прізвище.
+  \def\shortauthor@@english{\e@shortauthor@english}%
+  \emph{\csname shortauthor@@\languagename\endcsname}
+  \csname @title@\languagename\endcsname.
+  \cdash---
+  \manuscriptname.
+  \par
+  \set@thesisdescription.
+  \cdash---
+  \ifcsname @institution@altname@\languagename\endcsname
+    \csname @institution@altname@\languagename\endcsname
+  \else
+    \ifcsname @institution@office@\languagename\endcsname
+      \csname @institution@office@\languagename\endcsname,
+    \fi
+    \csname @institution@\languagename\endcsname
+  \fi
+  \ifcsname @council@town@\languagename\endcsname
+    \ifthenelse{\equal{\csname @towni@\languagename\endcsname}{\csname @council@town@\languagename\endcsname}}%
+      {}%
+      {, \csname @towni@\languagename\endcsname}%
+  \fi
+  \ifcsname @council@institution@altname@\languagename\endcsname
+    ; \csname @council@institution@altname@\languagename\endcsname
+  \else
+    \ifcsname @council@institution@\languagename\endcsname
+      ;
+      \ifcsname @council@institution@office@\languagename\endcsname
+        \csname @council@institution@office@\languagename\endcsname,
+      \fi
+      \csname @council@institution@\languagename\endcsname
+    \fi
+  \fi
+  ,
+  \ifcsname @council@town@\languagename\endcsname
+    \csname @council@town@\languagename\endcsname
+  \else
+    \csname @towni@\languagename\endcsname
+  \fi,
+  \@year.
+  \par
+  \smallskip
+}
+\def\@abstract@vakaref{%
+% Ім'я скорочено, по батькові немає, потім прізвище.
+  \def\shortauthor@@english{\e@shortauthor@english}%
+  \emph{\csname shortauthor@@\languagename\endcsname}
+  \csname @title@\languagename\endcsname.
+  \cdash---
+  \manuscriptname.
+  \par
+  \set@thesisdescription.
+  \cdash---
+  \ifcsname @council@institution@altname@\languagename\endcsname
+    \csname @council@institution@altname@\languagename\endcsname
+  \else
+    \ifcsname @council@institution@\languagename\endcsname
+      \ifcsname @council@institution@office@\languagename\endcsname
+        \csname @council@institution@office@\languagename\endcsname,
+      \fi
+      \csname @council@institution@\languagename\endcsname
+    \fi
+  \fi
+  ,
+  \ifcsname @council@town@\languagename\endcsname
+    \csname @council@town@\languagename\endcsname
+  \else
+    \csname @towni@\languagename\endcsname
+  \fi,
+  \@year.
+  \par
+  \smallskip
+}
+\def\@abstract{\csname @abstract@\@classname\endcsname}
+\renewcommand{\keywords}[1]{%
+  \smallskip
+% Грубим шрифтом і курсивом
+  \textbf{\emph{\keywordsname:}}
+  #1.
+  \par
+  % \bigskip
+}
+\AtBeginDocument{%
+  \addto\captionsenglish{%
+    \def\abstractname{Summary}%
+    \def\manuscriptname{%
+      Qualifying paper (manuscript copyright)%
+    }%
+    \def\set@thesisdescription{%
+      \set@degree, special field \set@abstract@speciality
+    }%
+  }%
+}
+% FIXME: Типові значення виключено,
+% бо вони не надто корисні для користувача,
+% але спричиняють проблеми з відмінюванням на звороті обкладинки авторферату,
+% якщо в документі команда не задає altname.
+% Національна академія внутрішніх справ,
+% Міністерство внутрішніх справ України
+% \institution(uk)[
+%   altname=\CYRN\cyra\cyrc\cyrii\cyro\cyrn\cyra\cyrl\cyrsftsn\cyrn\cyra\
+%     \cyra\cyrk\cyra\cyrd\cyre\cyrm\cyrii\cyrya\
+%     \cyrv\cyrn\cyru\cyrt\cyrr\cyrii\cyrsh\cyrn\cyrii\cyrh\
+%     \cyrs\cyrp\cyrr\cyra\cyrv
+% ]{\CYRN\cyra\cyrc\cyrii\cyro\cyrn\cyra\cyrl\cyrsftsn\cyrn\cyra\
+%     \cyra\cyrk\cyra\cyrd\cyre\cyrm\cyrii\cyrya\
+%     \cyrv\cyrn\cyru\cyrt\cyrr\cyrii\cyrsh\cyrn\cyrii\cyrh\
+%     \cyrs\cyrp\cyrr\cyra\cyrv,
+%   \CYRM\cyrii\cyrn\cyrii\cyrs\cyrt\cyre\cyrr\cyrs\cyrt\cyrv\cyro\
+%     \cyrv\cyrn\cyru\cyrt\cyrr\cyrii\cyrsh\cyrn\cyrii\cyrh\
+%     \cyrs\cyrp\cyrr\cyra\cyrv\
+%     \CYRU\cyrk\cyrr\cyra\cyryi\cyrn\cyri}
+%  {\CYRK\cyri\cyryi\cyrv}
+% \institution(en)[
+%   altname=National Academy of Internal Affairs
+% ]{National Academy of Internal Affairs,
+%   Ministry of Internal Affairs of Ukraine}
+%  {Kyiv}
+\endinput
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Local Variables:
+% mode: latex
+% coding: windows-1251-dos
+% End:
