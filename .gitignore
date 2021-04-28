@@ -283,3 +283,16 @@ TSWLatexianTemp*
 *.html
 *.htm
 
+## vakthesis. Just `cd vakthesis && make`
+casus.sty
+speciality.20070212N70
+vakaref.cls
+vakthesis.cls
+xampl-aref.tex
+xampl-bib.tex
+xampl-ch1.tex
+xampl-concl.tex
+xampl-intro.tex
+xampl-mybib.bib
+xampl-thesis.bib
+xampl-thesis.tex
