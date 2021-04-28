@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{mon2017dev-aref}
-  [2019/11/16 v0.01 vakaref support document class (OMB)]
+  [2021/04/12 v0.04 vakaref support document class (OMB)]
 % Означення опцій
 \RequirePackage{xkeyval}
 % Тип дисертації
@@ -10,7 +10,7 @@
   \ifcase\nr\relax
     \AtBeginDocument{%
       \addto\captionsenglish{%
-        \def\degreename{candidate of}%
+        \def\degreename{candidate}%
         \def\degreephdname{doctor of philosophy}%
       }%
       \addto\captionsrussian{%
@@ -24,7 +24,7 @@
     }%
   \or
     \AtBeginDocument{%
-      \addto\captionsenglish{\def\degreename{doctor of}}%
+      \addto\captionsenglish{\def\degreename{doctor}}%
       \addto\captionsrussian{\def\degreename{\cyrd\cyro\cyrk\cyrt\cyro\cyrr\cyra}}%
       \addto\captionsukrainian{\def\degreename{\cyrd\cyro\cyrk\cyrt\cyro\cyrr\cyra}}%
     }%
@@ -77,13 +77,17 @@
 \define@choicekey{mon2017dev-aref.cls}{instnameorder}{desc,asc,ascd}{%
   \def\set@institutions{\csname set@institutions@#1\endcsname}%
 }
+% Вказування шифру спеціалізованої вченої ради в рядку про вченого секретаря
+% TODO: Чи хороша назва для опції? Має бути інформативна, але також і коротка.
+% councilsec = шифр ради в рядку про секретаря (COUNCIL code in the SECretary line)
+\define@boolkey{mon2017dev-aref.cls}{councilsec}[true]{}
 % Підключення модуля для підтримки специфічних вимог, рекомендацій
 % окремого навчального закладу або наукової установи
 % чи посібника, порадника з оформлення дисертації
 \DeclareOptionX<mon2017dev-aref.cls>{guide}{%
   \IfFileExists{#1.clo}%
     {\AtEndOfClass{\input{#1.clo}}}%
-    {\ClassError{\@classname}{You cannot use option `guide=#1'}%
+    {\ClassError{mon2017dev-aref}{You cannot use option `guide=#1'}%
        {File `#1.clo' not found.}}}
 % Решту опцій перенаправляємо до vakaref
 \DeclareOptionX*{%
@@ -339,6 +343,19 @@
 \define@key{institution}{altname}{%
   \expandafter\def\csname @institution@altname\@modifier\endcsname{#1}%
 }
+% Підрозділ в установі, де виконано роботу
+% Про таку можливість незалежно запитувало кілька людей
+% (на жаль, нині вже не можу всіх згадати),
+% зокрема на форумі linux.org.ua:
+% https://linux.org.ua/index.php?topic=689.msg90111#msg90111
+\define@key{institution}{department}{%
+  \expandafter\def\csname @institution@department\@modifier\endcsname{#1}%
+}
+% Допоміжна опція для задання різних прийменників,
+% коли роботу виконано у відділі, на кафедрі, в Інституті тощо.
+\define@key{institution}{preposition}{%
+  \expandafter\def\csname @institution@preposition\@modifier\endcsname{#1}%
+}
 \renewcommand{\institution}[3][]{%
   \@split@institution#2,,\@nil
   \setkeys{institution}{#1}%
@@ -391,6 +408,131 @@
 \WithSuffix\def\council(#1){%
   \def\@modifier{@\csname#1language\endcsname}%
   \council
+}
+% Команда \secretary з оціями і опція класу councilsec тепер
+% дають змогу задавати додаткову інформацію для рядка про вченого секретаря:
+% науковий ступінь ученого секретаря, учений/вчений, шифр ради.
+% Про це незалежно запитувало кілька людей
+% (на жаль, нині вже не можу всіх згадати),
+% зокрема на форумі linux.org.ua:
+% https://linux.org.ua/index.php?topic=689.msg68367#msg68367
+% https://linux.org.ua/index.php?topic=689.msg200196#msg200196
+\define@key{secretary}{degree}{%
+  \expandafter\def\csname @secretary@degree\@modifier\endcsname{#1}%
+}
+% Старий варіант,
+% замінено на опцію класу councilsec, див. вище.
+% \define@boolkey{secretary}{councilcode}[false]{}
+% Старий варіант,
+% див. нижче \facsimilesig.
+% \define@key{secretary}{signature}{%
+%   \expandafter\def\csname @secretary@signature\@modifier\endcsname{#1}%
+% }
+\renewcommand{\secretary}[2][]{%
+  \setkeys{secretary}{#1}%
+  \expandafter\def\csname @secretary\@modifier\endcsname{#2}%
+}
+\WithSuffix\def\secretary(#1){%
+  \def\@modifier{@\csname#1language\endcsname}%
+  \secretary
+}
+\AtBeginDocument{%
+% TODO: \secretaryname чи \secretarytext? Інший варіант?
+% Команду \secretaryname названо за аналогією зі стандартними командами
+% \chaptername, \abstractname тощо.
+% Але тут вона, можливо, не дуже доречна,
+% бо це можна розуміти як ім'я чи назва секретаря,
+% а насправді це текст, який пишеться у відповідному рядку,
+% ім'я в секретаря є теж і задається іншим чином.
+\addto\captionsenglish{%
+% TODO: Додати адекватний англійський переклад з авторитетного джерела.
+  \def\secretaryname{%
+    Academic secretary\\
+    of special academic council%
+  }%
+}
+\addto\captionsukrainian{%
+  \def\secretaryname{%
+    \CYRU\cyrch\cyre\cyrn\cyri\cyrishrt\
+    \cyrs\cyre\cyrk\cyrr\cyre\cyrt\cyra\cyrr\\
+    \cyrs\cyrp\cyre\cyrc\cyrii\cyra\cyrl\cyrii\cyrz\cyro\cyrv\cyra\cyrn\cyro\cyryi\
+    \cyrv\cyrch\cyre\cyrn\cyro\cyryi\
+    \cyrr\cyra\cyrd\cyri
+  }%
+}%
+}
+% TODO: Якщо тут за допомогою \AtBeginDocument
+% додавати означення \secretaryname до \captions<language>,
+% а потім аналогічно робити в преамбулі (але після виклику babel),
+% то якось так виходить,
+% що друге переозначення буде додаватися вже після зміни мови,
+% а отже, потрапляє в \captions<language>, але не використовується.
+% Це має такий вигляд, ніби воно ігнорується просто.
+% Тобто в преамбулі треба просто в \AtBeginDocument
+% переозначувати \secretaryname незалежним від мови чином.
+% Це не велике обмеження, бо на титульному аркуші текст буде тільки однією з мов,
+% тому користувач переозначить потрібний йому варіант.
+% Але незрозуміло, чому так відбувається.
+% Колись, здається, переозначення цих залежних від мови команд
+% у преамбулі саме так і працювало (так, як я очікував зараз).
+% Можливо, якісь зміни в babel спричинили це?
+%
+% Факсимільний підпис
+% \facsimilesig#1(#2)[#3]#4 -> \put(#2){\includegraphics[#3]{#4}}
+% #1   = author або secretary
+% (#2) = (зсув по x, зсув по y)
+% [#3] = [параметри команди \includegraphics]
+% #4   = ім'я файла із факсимільним підписом
+% Про вставку сканованого підпису вченого секретаря або дисертанта
+% незалежно запитувало кілька людей
+% (на жаль, нині вже не можу всіх згадати),
+% зокрема на форумі linux.org.ua:
+% https://linux.org.ua/index.php?topic=689.msg68193#msg68193
+% https://linux.org.ua/index.php?topic=689.msg200078#msg200078
+% https://linux.org.ua/index.php?topic=689.msg202533#msg202533
+% NOTE: Не можна називати цю команду \signature,
+% бо така команда вже є в класі letter (зі схожим, але іншим призначенням),
+% а також, імовірно, в інших класах для оформлення листів:
+% https://en.wikibooks.org/wiki/LaTeX/Letters
+% І по суті це не «підпис», а «факсимільний підпис» («facsimile signature»),
+% тобто копія підпису особи, зроблена в електронному вигляді або у вигляді печатки.
+% Одне слово facsimile використовувати для назви команди теж може бути недоречно,
+% бо воно, взагалі кажучи, позначає певну форму видання:
+% https://en.wikipedia.org/wiki/Facsimile
+% А також може використовуватися у зв'язку з такими пристроями як факс:
+% https://www.ctan.org/pkg/facsimile
+% Тому команда називається \facsimilesig,
+% щоб назва адекватно передавала зміст,
+% була відносно короткою
+% і не конфліктувала з назвами інших команд в інших класах.
+\def\facsimilesig#1(#2)[#3]#4{%
+  \expandafter\def\csname #1@signature\endcsname{%
+    \put(#2){\includegraphics[#3]{#4}}%
+  }%
+}
+%% Синтаксис команди
+%% \library{назва}{адреса}
+% Команда \library тепер коректно працює,
+% коли бібліотека називається не просто «бібліотека Деякого університету»,
+% а якось типу «Науково-технічна бібліотека Деякого університету».
+% Для задання такої спеціальної назви
+% використовується перший аргумент команди \library.
+% Також виправлено помилку, через яку перший аргумент просто ігнорувався.
+% Про цю помилку 2020-12-29 повідомив ipvm:
+% https://linux.org.ua/index.php?topic=689.msg203518#msg203518
+\renewcommand{\library}[2]{%
+  \ifx\relax#1\relax
+  \else
+    \expandafter\def\csname @library@institution\@modifier\endcsname{#1}%
+  \fi
+  \ifx\relax#2\relax
+  \else
+    \expandafter\def\csname @library@address\@modifier\endcsname{#2}%
+  \fi
+}
+\WithSuffix\def\library(#1){%
+  \def\@modifier{@\csname#1language\endcsname}%
+  \library
 }
 % Для оформлення інформації про наукового керівника на титульному аркуші.
 % Тепер схоже на те, що в авторефераті.
@@ -552,7 +694,7 @@
   }%
 }
 \def\degreefield@tf@russian#1{%
-  \IfEndWith{#1}{\cyre}{%
+  \IfEndWith{#1}{\cyrk\cyri\cyre}{% FIXME: тут треба перевіряти три букви (а не одну), щоб відокремити випадки искусствоведение і государственное управление; але випадають ветеринарные тощо (це не критично, тому зроблю колись)
     \StrGobbleRight{#1}{1}\cyrh\ \cyrn\cyra\cyru\cyrk
     % \case[adjective]{G}{#1} наук% не працює тут
   }{%
@@ -561,10 +703,10 @@
       {\StrGobbleRight{#1}{1}\cyrery}% \case{G}{#1} не працює тут
       {\cyrk\cyru\cyrl\cyrsftsn\cyrt\cyru\cyrr\cyro\cyrl\cyro\cyrg\cyri\cyrya}% культурология
       {\StrGobbleRight{#1}{1}\cyri}%
-      {\cyri\cyrs\cyrk\cyru\cyrs\cyrs\cyrt\cyrv\cyro\cyrv\cyre\cyrd\cyre\cyrn\cyri\cyre}% искусствоведение% FIXME: не працює, бо закінчується на е, а отже, потрапляє в інший випадок
+      {\cyri\cyrs\cyrk\cyru\cyrs\cyrs\cyrt\cyrv\cyro\cyrv\cyre\cyrd\cyre\cyrn\cyri\cyre}% искусствоведение% FIXME: не працює, бо закінчується на е, а отже, потрапляє в інший випадок; працює, якщо в першій частині перевіряти три букви
       {\StrGobbleRight{#1}{1}\cyrya}%
       {\cyrg\cyro\cyrs\cyru\cyrd\cyra\cyrr\cyrs\cyrt\cyrv\cyre\cyrn\cyrn\cyro\cyre\space
-        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyre}% государственное управление% FIXME: не працює, бо закінчується на е, а отже, потрапляє в інший випадок
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyre}% государственное управление% FIXME: не працює, бо закінчується на е, а отже, потрапляє в інший випадок; працює, якщо в першій частині перевіряти три букви
       {\cyrn\cyra\cyru\cyrk\ \cyrp\cyro\
         \cyrg\cyro\cyrs\cyru\cyrd\cyra\cyrr\cyrs\cyrt\cyrv\cyre\cyrn\cyrn\cyro\cyrm\cyru\
         \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyryu}%
@@ -589,7 +731,25 @@
 % TODO: Англійською теж можуть бути різні варіанти (типу мистецтвознавства).
 % Але у мене нині немає повного переліку наукових спеціальностей англійською.
 % Тому залишу це на потім (якщо виникне потреба).
-\def\degreefield@tf@english#1{#1 sciences}
+% \def\degreefield@tf@english#1{#1 sciences}
+% Початковий варіант може бути такий:
+\def\degreefield@tf@english#1{%
+  \IfStrEqCase{#1}{%
+    {architecture}% архітектура
+    {of #1}%
+    {culturology}% культурологія
+    {of #1}%
+    {art history}% мистецтвознавство
+    {of #1}%
+    {public administration}% державне управління
+    {of sciences in #1}%
+    {physical education and sport}% фізичне виховання і спорт
+    {of sciences in #1}%
+    {social communication}% соціальні комунікації
+    {of sciences in #1}%
+  }%
+  [of #1 sciences]%
+}
 \def\set@degree@c{%
   \degreename\
   \csname degreefield@tf@\languagename\endcsname{\csname @specialitysci@degreefield@\languagename\endcsname}%
@@ -597,9 +757,15 @@
     \ (\degreephdname)%
   \fi
 }
+% Виправив механічну помилку, яку я зробив ще у версії 0.04 класу mon2017dev,
+% коли робив різні команди \set@degree для типів дисертації c і d.
+% Команди \degreename\ і \csname чомусь помінялися місцями,
+% тому зламалося оформлення напису про науковий ступінь
+% на титульному аркуші й в анотації для типу дисертації d.
+% Юлія Бернацька повідомила 2020/07/28 про цю проблему.
 \def\set@degree@d{%
-  \csname
-  \degreename\ degreefield@tf@\languagename\endcsname{\csname @specialitysci@degreefield@\languagename\endcsname}%
+  \degreename\
+  \csname degreefield@tf@\languagename\endcsname{\csname @specialitysci@degreefield@\languagename\endcsname}%
 }
 \def\set@degree@phdartdscd{%
   \degreename
@@ -607,7 +773,13 @@
 \def\@makecover{%
   \set@institutions
   \vspace{\stretch{3}}%
-  {\bfseries\expandafter\expandafter\expandafter\emphsurname\csname @author@\languagename\endcsname \par}%
+  {\bfseries\expandafter\expandafter\expandafter\emphsurname\csname @author@\languagename\endcsname
+  \ifcsname author@signature\endcsname
+    \begin{picture}(0,0)
+      \csname author@signature\endcsname
+    \end{picture}
+  \fi
+  \par}%
   \vspace{\stretch{2}}%
   {\raggedleft \CYRU\CYRD\CYRK\ \@udc \par}%
   \vspace{\stretch{1}}%
@@ -632,23 +804,51 @@
   \CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrie\cyryu\
     \cyrie\ \@thesistype.\par
   \CYRR\cyro\cyrb\cyro\cyrt\cyra\
-    \cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrn\cyra\ \cyrv\
+    \cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrn\cyra\
+    \ifcsname @institution@preposition@\languagename\endcsname
+      \csname @institution@preposition@\languagename\endcsname
+    \else
+      \cyrv
+    \fi
+    \
 % TODO: Перевірити вимоги до оформлення.
 % Можливо, тут завжди треба писати повну назву відомства,
 % а тому використання @institution@altname недоцільне?
-    \ifcsname @institution@altname@\languagename\endcsname
+    \ifcsname @institution@department@\languagename\endcsname
       \iflanguage{ukrainian}%
-        {\transformsentence{L}{\@institution@altname@ukrainian} }%
-        {\csname @institution@altname@\languagename\endcsname}%
-    \else
-      \iflanguage{ukrainian}%
-        {\transformsentence{L}{\@institution@ukrainian} }%
-        {\csname @institution@\languagename\endcsname}%
-      \ifcsname @institution@office@\languagename\endcsname
-        \
+        {\transformsentence{L}{\@institution@department@ukrainian} }%
+        {\csname @institution@department@\languagename\endcsname}%
+      \
+      \ifcsname @institution@altname@\languagename\endcsname
         \iflanguage{ukrainian}%
-          {\transformsentence{G}{\@institution@office@ukrainian} }%
-          {\csname @institution@office@\languagename\endcsname}%
+          {\transformsentence{G}{\@institution@altname@ukrainian} }%
+          {of \csname @institution@altname@\languagename\endcsname}%
+      \else
+        \iflanguage{ukrainian}%
+          {\transformsentence{G}{\@institution@ukrainian} }%
+          {of \csname @institution@\languagename\endcsname}%
+        \ifcsname @institution@office@\languagename\endcsname
+          \
+          \iflanguage{ukrainian}%
+            {\transformsentence{G}{\@institution@office@ukrainian} }%
+            {of \csname @institution@office@\languagename\endcsname}%
+        \fi
+      \fi
+    \else
+      \ifcsname @institution@altname@\languagename\endcsname
+        \iflanguage{ukrainian}%
+          {\transformsentence{L}{\@institution@altname@ukrainian} }%
+          {\csname @institution@altname@\languagename\endcsname}%
+      \else
+        \iflanguage{ukrainian}%
+          {\transformsentence{L}{\@institution@ukrainian} }%
+          {\csname @institution@\languagename\endcsname}%
+        \ifcsname @institution@office@\languagename\endcsname
+          \
+          \iflanguage{ukrainian}%
+            {\transformsentence{G}{\@institution@office@ukrainian} }%
+            {of \csname @institution@office@\languagename\endcsname}%
+        \fi
       \fi
     \fi
     .\par
@@ -688,7 +888,7 @@
         \
         \iflanguage{ukrainian}%
           {\transformsentence{G}{\@council@institution@office@ukrainian} }%
-          {\csname @council@institution@office@\languagename\endcsname}%
+          {of \csname @council@institution@office@\languagename\endcsname}%
       \fi
     \fi
     \ \cyrz\cyra\ \cyra\cyrd\cyrr\cyre\cyrs\cyro\cyryu:
@@ -697,33 +897,75 @@
   \CYRZ\ \cyrd\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrie\cyryu\
     \cyrm\cyro\cyrzh\cyrn\cyra\
     \cyro\cyrz\cyrn\cyra\cyrishrt\cyro\cyrm\cyri\cyrt\cyri\cyrs\cyrsftsn\
-    \cyru\ \cyrb\cyrii\cyrb\cyrl\cyrii\cyro\cyrt\cyre\cyrc\cyrii\
-    \ifx\@library@institution\@empty
+    \cyru\
+    \ifcsname @library@institution@\languagename\endcsname
+      \iflanguage{ukrainian}%
+        {\transformsentence{L}{\@library@institution@ukrainian} }%
+        {\csname @library@institution@\languagename\endcsname}%
+    \else
+      \cyrb\cyrii\cyrb\cyrl\cyrii\cyro\cyrt\cyre\cyrc\cyrii\
       \ifcsname @council@institution@altname@\languagename\endcsname
         \iflanguage{ukrainian}%
           {\transformsentence{G}{\@council@institution@altname@ukrainian} }%
-          {\csname\@council@institution@altname@\languagename\endscname}%
+          {\csname @council@institution@altname@\languagename\endcsname}%
       \else
         \iflanguage{ukrainian}%
           {\transformsentence{G}{\@council@institution@ukrainian} \ \transformsentence{G}{\@council@institution@office@ukrainian} }%
-          {\csname\@council@institution@\languagename\endscname\ of \csname\@council@institution@office@\languagename\endscname}%
+          {\csname @council@institution@\languagename\endcsname\ of \csname @council@institution@office@\languagename\endcsname}%
       \fi
     \fi
-    \@ifundefined{@library@address}{.\par}
-      {\ \cyrz\cyra\ \cyra\cyrd\cyrr\cyre\cyrs\cyro\cyryu:
-       \@library@address.\par}
+    \ifcsname @library@address@\languagename\endcsname
+      \ \cyrz\cyra\ \cyra\cyrd\cyrr\cyre\cyrs\cyro\cyryu:
+      \csname @library@address@\languagename\endcsname
+    \fi
+    \@addpunct{.}\par
   \vfill%\vspace{10pt plus 10pt minus 10pt}%
   \CYRA\cyrv\cyrt\cyro\cyrr\cyre\cyrf\cyre\cyrr\cyra\cyrt\
     \cyrr\cyro\cyrz\cyrii\cyrs\cyrl\cyra\cyrn\cyri\cyrishrt\
     \@ifundefined{@postdate}{\typedateholder}
       {\expandafter\typedate\@postdate\@nil}\par
   \vfill%\vspace{20pt plus 20pt minus 20pt}%
-  \CYRU\cyrch\cyre\cyrn\cyri\cyrishrt\
-  \cyrs\cyre\cyrk\cyrr\cyre\cyrt\cyra\cyrr\newline
-  \cyrs\cyrp\cyre\cyrc\cyrii\cyra\cyrl\cyrii\cyrz\cyro\cyrv\cyra\cyrn\cyro\cyryi\
-  \cyrv\cyrch\cyre\cyrn\cyro\cyryi\ \cyrr\cyra\cyrd\cyri\hfill
+  % \CYRU\cyrch\cyre\cyrn\cyri\cyrishrt\
+  % \cyrs\cyre\cyrk\cyrr\cyre\cyrt\cyra\cyrr\newline
+  % \cyrs\cyrp\cyre\cyrc\cyrii\cyra\cyrl\cyrii\cyrz\cyro\cyrv\cyra\cyrn\cyro\cyryi\
+  % \cyrv\cyrch\cyre\cyrn\cyro\cyryi\ \cyrr\cyra\cyrd\cyri
+  \secretaryname
+% Опцію команди councilcode замінено на опцію класу councilsec
+  % \ifKV@secretary@councilcode
+  %   \
+  %   \csname @council@code@\languagename\endcsname
+  % \fi
+  \csname ifKV@mon2017dev-aref.cls@councilsec\endcsname
+    \
+    \csname @council@code@\languagename\endcsname
+  \fi
+  \ifcsname @secretary@degree@\languagename\endcsname
+    \\
+    \csname @secretary@degree@\languagename\endcsname
+  \fi
+  \hfill
+  \ifcsname secretary@signature\endcsname
+% Оточення minipage для того, щоб текст обтікав зображення.
+% Але \raisebox рухає текст, тобто якщо задати від'ємне значення,
+% то не зображення посунеться вниз, а сусідній текст -- вгору.
+% Варіант із заданням підпису ключем команди \secretary відхилив зрештою, бо
+% 1) важко запрограмувати гнучке керування розміщенням підпису,
+% 2) у ситуації з двома мовами для кожної мови треба задавати по суті те саме.
+    % \raisebox{-10pt}{%
+    %   \begin{minipage}[b][0pt]{50pt}
+    %     \expandafter\expandafter\expandafter\includegraphics\csname @secretary@signature@\languagename\endcsname
+    %   \end{minipage}
+    % }%
+% Тому файл підпису і параметри його розміщення задаються окремою командою,
+% а зображення розміщується так, як запропоновано тут:
+% https://tex.stackexchange.com/a/328858
+    \begin{picture}(0,0)
+      \csname secretary@signature\endcsname
+    \end{picture}
+  \fi
+  \hfill
   %\placeholder{\cyrp\cyrii\cyrd\cyrp\cyri\cyrs}\quad
-  \@secretary\par}
+  \csname @secretary@\languagename\endcsname\par}
 % Abstract буде збиратися на місці, а не копіюватися і переноситися
 \define@cmdkey{abstract}{language}{}
 \define@cmdkey{abstract}{chapter}[true]{}
@@ -1013,6 +1255,10 @@
 % Тут немає потреби використовувати \providecommand,
 % як для переозначення в преамбулі (див. файл BUGS, повідомлення від 2018/04/15),
 % бо на цьому етапі \@Asbuk і \@asbuk у будь-якому разі неозначені.
+%
+% Модифікації casus
+%
+\AtBeginDocument{\usepackage{casus2017dev}}
 \endinput
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Local Variables:

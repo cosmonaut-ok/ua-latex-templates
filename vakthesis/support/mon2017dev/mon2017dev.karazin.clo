@@ -7,7 +7,7 @@
 %   https://drive.google.com/open?id=1hF-0YNb3s3LWUnEXTSvpFQ0MmwwEPN4d
 % і «Рекомендації до оформлення автореферату дисертації»
 %   https://drive.google.com/open?id=176Z_Dc-cIwF7b2-zRl4f2xxnmT_o9tJH
-% Для дисертації на здобуття ступеня кандидата/доктора ... наук
+% Для дисертації на здобуття ступеня кандидата/доктора <галузь науки>
 % пишеться галузь науки на титульному аркуші й в анотації.
 % Те саме для автореферату дисертації
 % (це забезпечує однакове оформлення для дисертації та автореферату,
@@ -15,7 +15,7 @@
 % Також деякі дрібні зміни в оформленні.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ProvidesFile{mon2017dev.karazin.clo}
-  [2019/11/16 v0.02
+  [2021/01/17 v0.03
    Guide option for mon2017dev (OMB)]
 \newif\if@vakthesis
 \newif\if@vakaref
@@ -123,7 +123,7 @@
     \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyri\
     \cyrv\cyrl\cyra\cyrs\cyrn\cyri\cyrh\
     \cyrd\cyro\cyrs\cyrl\cyrii\cyrd\cyrzh\cyre\cyrn\cyrsftsn.
-    % Використання ідей, результатів і текстів інших авторів мають посилання на відповідне джерело 
+    % Використання ідей, результатів і текстів інших авторів мають посилання на відповідне джерело
     \CYRV\cyri\cyrk\cyro\cyrr\cyri\cyrs\cyrt\cyra\cyrn\cyrn\cyrya\
     \cyrii\cyrd\cyre\cyrishrt,
     \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyrii\cyrv\
@@ -138,7 +138,13 @@
     \cyrd\cyrzh\cyre\cyrr\cyre\cyrl\cyro.\par
     \medskip
     \raggedleft
-    \placeholder[25mm]
+    \ifcsname author@signature\endcsname
+      \begin{picture}(0,0)
+        \csname author@signature\endcsname
+      \end{picture}
+    \else
+      \placeholder[25mm]
+    \fi
     \csname @shortauthor@\languagename\endcsname\par}
   \vspace{\stretch{2}}%
   {%

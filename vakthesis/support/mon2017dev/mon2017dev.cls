@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{mon2017dev}
-  [2019/11/16 v0.05 vakthesis support document class (OMB)]
+  [2021/04/12 v0.08 vakthesis support document class (OMB)]
 % Означення опцій
 \RequirePackage{xkeyval}
 % Тип дисертації
@@ -10,7 +10,7 @@
   \ifcase\nr\relax
     \AtBeginDocument{%
       \addto\captionsenglish{%
-        \def\degreename{candidate of}%
+        \def\degreename{candidate}%
         \def\degreephdname{doctor of philosophy}%
       }%
       \addto\captionsukrainian{%
@@ -20,7 +20,7 @@
     }%
   \or
     \AtBeginDocument{%
-      \addto\captionsenglish{\def\degreename{doctor of}}%
+      \addto\captionsenglish{\def\degreename{doctor}}%
       \addto\captionsukrainian{\def\degreename{\cyrd\cyro\cyrk\cyrt\cyro\cyrr\cyra}}%
     }%
   \or
@@ -69,13 +69,22 @@
 \define@choicekey{mon2017dev.cls}{instnameorder}{desc,asc,ascd}{%
   \def\set@institutions{\csname set@institutions@#1\endcsname}%
 }
+% Опція класу councilsec -- це просто заглушка з попередженням
+% для узгодження з класом автореферату.
+% У дисертації вона не використовується (принаймні в поточній версії).
+\define@boolkey{mon2017dev.cls}{councilsec}[true]{%
+  \ClassWarningNoLine{mon2017dev}{%
+    Option `councilsec' is not used in the current\MessageBreak
+    version of mon2017dev class%
+  }%
+}
 % Підключення модуля для підтримки специфічних вимог, рекомендацій
 % окремого навчального закладу або наукової установи
 % чи посібника, порадника з оформлення дисертації
 \DeclareOptionX<mon2017dev.cls>{guide}{%
   \IfFileExists{#1.clo}%
     {\AtEndOfClass{\input{#1.clo}}}%
-    {\ClassError{\@classname}{You cannot use option `guide=#1'}%
+    {\ClassError{mon2017dev}{You cannot use option `guide=#1'}%
        {File `#1.clo' not found.}}}
 % Решту опцій перенаправляємо до vakthesis
 \DeclareOptionX*{%
@@ -329,6 +338,23 @@
 \define@key{institution}{altname}{%
   \expandafter\def\csname @institution@altname\@modifier\endcsname{#1}%
 }
+% Опції department і preposition -- це просто заглушки з попередженням
+% для узгодження з класом автореферату.
+% У дисертації вони не використовуються (принаймні в поточній версії).
+\define@key{institution}{department}{%
+  % \expandafter\def\csname @institution@department\@modifier\endcsname{#1}%
+  \ClassWarning{mon2017dev}{%
+    Option `department' is not used in the current\MessageBreak
+    version of mon2017dev class%
+  }%
+}
+\define@key{institution}{preposition}{%
+  % \expandafter\def\csname @institution@preposition\@modifier\endcsname{#1}%
+  \ClassWarning{mon2017dev}{%
+    Option `preposition' is not used in the current\MessageBreak
+    version of mon2017dev class%
+  }%
+}
 \renewcommand{\institution}[3][]{%
   \@split@institution#2,,\@nil
   \setkeys{institution}{#1}%
@@ -381,6 +407,54 @@
 \WithSuffix\def\council(#1){%
   \def\@modifier{@\csname#1language\endcsname}%
   \council
+}
+% Команда \secretary -- це просто заглушка з попередженням
+% для узгодження з класом автореферату.
+% У дисертації вона не використовується (принаймні в поточній версії).
+\newcommand{\secretary}[2][]{%
+  % \setkeys{secretary}{#1}%
+  % \expandafter\def\csname @secretary\@modifier\endcsname{#2}%
+  \ClassWarning{mon2017dev}{%
+    Command \protect\secretary\space is not used in the current\MessageBreak
+    version of mon2017dev class%
+  }%
+}
+\WithSuffix\def\secretary(#1){%
+  % \def\@modifier{@\csname#1language\endcsname}%
+  \secretary
+}
+% Факсимільний підпис
+% \facsimilesig#1(#2)[#3]#4 -> \put(#2){\includegraphics[#3]{#4}}
+% #1   = author
+% (#2) = (зсув по x, зсув по y)
+% [#3] = [параметри команди \includegraphics]
+% #4   = ім'я файла із факсимільним підписом
+% Мотивацію вибору імені команди див. у файлі mon2017dev-aref.cls.
+\def\facsimilesig#1(#2)[#3]#4{%
+  \expandafter\def\csname #1@signature\endcsname{%
+    \put(#2){\includegraphics[#3]{#4}}%
+  }%
+}
+% Команда \library -- це просто заглушка з попередженням
+% для узгодження з класом автореферату.
+% У дисертації вона не використовується (принаймні в поточній версії).
+\newcommand{\library}[2]{%
+  % \ifx\relax#1\relax
+  % \else
+  %   \expandafter\def\csname @library@institution\@modifier\endcsname{#1}%
+  % \fi
+  % \ifx\relax#2\relax
+  % \else
+  %   \expandafter\def\csname @library@address\@modifier\endcsname{#2}%
+  % \fi
+  \ClassWarning{mon2017dev}{%
+    Command \protect\library\space is not used in the current\MessageBreak
+    version of mon2017dev class%
+  }%
+}
+\WithSuffix\def\library(#1){%
+  % \def\@modifier{@\csname#1language\endcsname}%
+  \library
 }
 % Для оформлення інформації про наукового керівника на титульному аркуші.
 % Тепер схоже на те, що в авторефераті.
@@ -558,7 +632,25 @@
 % TODO: Англійською теж можуть бути різні варіанти (типу мистецтвознавства).
 % Але у мене нині немає повного переліку наукових спеціальностей англійською.
 % Тому залишу це на потім (якщо виникне потреба).
-\def\degreefield@tf@english#1{#1 sciences}
+% \def\degreefield@tf@english#1{#1 sciences}
+% Початковий варіант може бути такий:
+\def\degreefield@tf@english#1{%
+  \IfStrEqCase{#1}{%
+    {architecture}% архітектура
+    {of #1}%
+    {culturology}% культурологія
+    {of #1}%
+    {art history}% мистецтвознавство
+    {of #1}%
+    {public administration}% державне управління
+    {of sciences in #1}%
+    {physical education and sport}% фізичне виховання і спорт
+    {of sciences in #1}%
+    {social communication}% соціальні комунікації
+    {of sciences in #1}%
+  }%
+  [of #1 sciences]%
+}
 \def\set@degree@c{%
   \degreename\
   \csname degreefield@tf@\languagename\endcsname{\csname @specialitysci@degreefield@\languagename\endcsname}%
@@ -566,9 +658,15 @@
     \ (\degreephdname)%
   \fi
 }
+% Виправив механічну помилку, яку я зробив ще у версії 0.04,
+% коли робив різні команди \set@degree для типів дисертації c і d.
+% Команди \degreename\ і \csname чомусь помінялися місцями,
+% тому зламалося оформлення напису про науковий ступінь
+% на титульному аркуші й в анотації для типу дисертації d.
+% Юлія Бернацька повідомила 2020/07/28 про цю проблему.
 \def\set@degree@d{%
-  \csname
-  \degreename\ degreefield@tf@\languagename\endcsname{\csname @specialitysci@degreefield@\languagename\endcsname}%
+  \degreename\
+  \csname degreefield@tf@\languagename\endcsname{\csname @specialitysci@degreefield@\languagename\endcsname}%
 }
 \def\set@degree@phdartdscd{%
   \degreename
@@ -608,7 +706,7 @@
     \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyri\
     \cyrv\cyrl\cyra\cyrs\cyrn\cyri\cyrh\
     \cyrd\cyro\cyrs\cyrl\cyrii\cyrd\cyrzh\cyre\cyrn\cyrsftsn.
-    % Використання ідей, результатів і текстів інших авторів мають посилання на відповідне джерело 
+    % Використання ідей, результатів і текстів інших авторів мають посилання на відповідне джерело
     \CYRV\cyri\cyrk\cyro\cyrr\cyri\cyrs\cyrt\cyra\cyrn\cyrn\cyrya\
     \cyrii\cyrd\cyre\cyrishrt,
     \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyrii\cyrv\
@@ -623,7 +721,13 @@
     \cyrd\cyrzh\cyre\cyrr\cyre\cyrl\cyro.\par
     \medskip
     \raggedleft
-    \placeholder[25mm]
+    \ifcsname author@signature\endcsname
+      \begin{picture}(0,0)
+        \csname author@signature\endcsname
+      \end{picture}
+    \else
+      \placeholder[25mm]
+    \fi
     \csname @shortauthor@\languagename\endcsname\par}
   \vspace{\stretch{2}}%
   {%
