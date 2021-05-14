@@ -17,6 +17,7 @@
 ]{extarticle}
 
 % %%   packages
+%% \RequirePackage{tgtermes} % times font
 \RequirePackage{tempora}  % Times for numbers in math mode
 \RequirePackage{newtxmath}
 
@@ -28,8 +29,8 @@
 \RequirePackage[left=2.5cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 \RequirePackage[affil-it]{authblk}
 
-\renewcommand\Authfont{\bfseries \itshape \large}
-\renewcommand\Affilfont{\bfseries \itshape \large}
+\renewcommand\Authfont{\center \itshape \large}
+\renewcommand\Affilfont{\center \itshape \large}
 
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T2A, T1]{fontenc}
@@ -43,30 +44,31 @@
 
 \pagenumbering{gobble} % remove page numbering. Variants: r(R)oman, a(A)rabic, a(A)lph
 
+\titleformat*{\section}{\noindent \center \bfseries \large \MakeUppercase}
+\titleformat*{\subsection}{\noindent \center \bfseries \normalsize \MakeUppercase }
+\titleformat*{\subsubsection}{\noindent \center \bfseries \normalsize \MakeUppercase }
 
-\titleformat*{\section}{\center \bfseries \large \MakeUppercase }
-\titleformat*{\subsection}{\center \bfseries \normalsize \MakeUppercase }
-\titleformat*{\subsubsection}{\center \bfseries \normalsize \MakeUppercase }
+\titlespacing{\section}{0pt}{0pt}{0pt}
+\titlespacing{\subsection}{0pt}{0pt}{0pt}
+\titlespacing{\subsubsection}{0pt}{0pt}{0pt}
 
-\titlespacing{\section}{0pt}{*0}{*0}
-\titlespacing{\subsection}{0pt}{*0}{*0}
-\titlespacing{\subsubsection}{0pt}{*0}{*0}
-
-%% %% % \usepackage{cite}
-
-\usepackage{multicol}
+\RequirePackage{multicol}
 \setlength{\columnwidth}{8cm}
 \setlength{\columnsep}{0.5cm}
 
+
+\newcommand{\temail}[1]{\newcommand{\@email}{#1}}
+
 \newcommand*{\email}[1]{
-  \normalsize email: {#1}\par
+  email: {#1}\par
 }
 
-%% \newcommand*{\pacs}[1]{
-%%   \normalsize PACS Numbers: {#1}\par
-%% }
 \newcommand*{\pacs}{
-  \normalsize PACS: {29.17.+w;41.75.Lx;}\par %% hardcoding PACS numbers yo ho ho
+  {\noindent PACS: {29.17.+w;41.75.Lx;}}\par %% hardcoding PACS numbers yo ho ho
+}
+
+\newcommand*{\pacscustom}[1]{
+  {\large \noindent PACS: {#1}}\par
 }
 
 \RequirePackage[square,sort&compress,comma,numbers]{natbib}
@@ -75,34 +77,37 @@
 % make bibliography compact
 \setlength{\bibsep}{0pt plus 0.3ex}
 
-\RequirePackage[format=plain,
-labelfont=it,
-textfont=it,
-figurename=Fig.]{caption}
+\RequirePackage[center,
+  indention=0cm,
+  format=plain,
+  labelfont=it,
+  textfont=it,
+  figurename=Fig.]{caption}
 
 \makeatletter
 \renewcommand{\maketitle}{
-\begin{center}
-{\Large\bfseries\MakeUppercase\@title\par}
-\medskip
-{\@author\par}
-\end{center}
+    \begin{center}
+      {\Large \noindent \bfseries \MakeUppercase \@title \par}
+      \bigskip
+      {\large \noindent \itshape \@author \par}
+      \bigskip
+      {\noindent \bfseries email:} {\noindent \bfseries \@email \par}
+    \end{center}
 }
 \makeatother
 
 \setlength{\parindent}{0.5cm}
 \setlength{\parskip}{0cm}
 
-%% set abstract title
-% \renewcommand{\abstractname}{Very good abstract}
-
 \RequirePackage{indentfirst}
 
+%% TODO: make noindent
 \renewenvironment{abstract}
 {\list{}{
+    \setlength{\parindent}{0cm}
     \setlength{\leftmargin}{0px}
     \setlength{\rightmargin}{\leftmargin}
-    \setlength{\itemindent}{0.5cm}
+    \setlength{\itemindent}{0cm}
   }%
   \item\relax}
 {\endlist}
@@ -120,10 +125,12 @@ figurename=Fig.]{caption}
 \renewcommand{\bibsection}{\section*{References}}
 
 \newcommand{\taaotherlang}[3]{ %% add title, author names and abstract on other languages (ukrainian and russian required by VANT)
+  \begin{minipage}{\textwidth}
   \begin{center}
-    \section*{#1}
-    \large{\textbf{\textit{#2}}}
+    {\noindent \Large \bfseries \MakeUppercase {#1} \newline \newline}
+    {\noindent \large \itshape {#2} }
   \end{center}
+  \end{minipage}
   \begin{abstract}
     {#3}
   \end{abstract}
