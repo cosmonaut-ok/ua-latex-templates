@@ -64,11 +64,11 @@
 }
 
 \newcommand*{\pacs}{
-  {\noindent PACS: {29.17.+w;41.75.Lx;}}\par %% hardcoding PACS numbers yo ho ho
+  \normalsize PACS:~{29.17.+w;41.75.Lx;}\par %% hardcoding PACS numbers yo ho ho
 }
 
 \newcommand*{\pacscustom}[1]{
-  {\large \noindent PACS: {#1}}\par
+  {\large \noindent PACS:~{#1}}\par
 }
 
 \RequirePackage[square,sort&compress,comma,numbers]{natbib}
@@ -76,6 +76,12 @@
 \bibliographystyle{vant_bib} % git@gitlab.com:my-funny-plasma/bibliography.git required
 % make bibliography compact
 \setlength{\bibsep}{0pt plus 0.3ex}
+
+% set 'dot' after citation numbers
+% required by PAST
+\makeatletter
+\renewcommand\@biblabel[1]{#1.}
+\makeatother
 
 \RequirePackage[center,
   indention=0cm,
