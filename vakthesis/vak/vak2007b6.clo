@@ -1,0 +1,30 @@
+%%
+%% This is file `vak2007b6.clo',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% vakthesis.dtx  (with options: `vak2007b6')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from vak2007b6.clo.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file vakthesis.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+\ProvidesFile{vak2007b6.clo}
+  [2021/07/21 v0.09
+   Guide option for vakthesis (OMB)]
+\def\tablenamefont{\itshape}
+\def\tablecaptionfont{\bfseries}
+\endinput
+%%
+%% End of file `vak2007b6.clo'.

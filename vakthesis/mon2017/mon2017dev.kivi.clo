@@ -1,0 +1,280 @@
+%%% mon2017dev.kivi.clo --- Оформлення дисертації в стилі Киви
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Модуль для оформлення дисертації й автореферату в стилі Киви:
+% на титульному аркуші та в анотації пишеться, що це
+% дисертація за здоров'я наукового рівня (українською),
+% dissertation to the health of the science level (англійською).
+%
+% На його створення надихнув захист дисертації І. В. Киви.
+% Ілля Кива — одіозний медіа-персонаж в Україні,
+% а також за непідтвердженою інформацією народний депутат і власник жомової ями.
+% З доброго дива він захотів стати ще й кандидатом наук з державного управління.
+% Захист дисертації заплановано на 26.04.2021
+% у спеціалізованій вченій раді Д 26.891.02
+% Інституту підготовки кадрів державної служби зайнятості України:
+%   http://ipk.edu.ua/spetsializovana-vchena-rada-d-26-891-02_/
+%
+% В англійській анотації автореферату написано (за станом на 12.04.2021),
+% що це Dissertation to the health of the science level
+% of the candidate of sciences from the sovereign administration
+% for special 25.00.02 – mechanisms of the sovereign administration:
+%   http://ipk.edu.ua/wp-content/uploads/2021/03/aref-Kyva.pdf
+% (на жаль, дисертація недоступна на сайті установи).
+%
+% У модулі реалізовано використання цієї прекрасної фрази
+% і її адаптованої версії українською та російською мовами
+% на титульному аркуші та в анотації дисертації й автореферату.
+% Можливе пояснення слів «to the health» як тосту запропонували
+% в обговоренні на фейсбук-сторінці Ukrainian Scientists Worldwide:
+%   https://www.facebook.com/groups/314070194112/permalink/10159855663304113/
+%
+% Цей модуль не має значної практичної цінності.
+% Його призначення — привернути увагу до поодиноких кумедних випадків,
+% що трапляються в українській академічній спільноті.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesFile{mon2017dev.kivi.clo}
+  [2021/04/12 v0.01
+   Guide option for mon2017dev (OMB)]
+\def\degreefield@tf@ukrainian#1{%
+  \IfEndWith{#1}{\cyrii}{%
+    \cyrv\cyrii\cyrd\ \StrGobbleRight{#1}{1}\cyri\cyrh\ \cyrn\cyra\cyru\cyrk
+    % \case[adjective]{G}{#1} наук% не працює тут
+  }{%
+    \IfStrEqCase{#1}{%
+      {\cyra\cyrr\cyrh\cyrii\cyrt\cyre\cyrk\cyrt\cyru\cyrr\cyra}% архітектура
+      {\cyrv\cyrii\cyrd\ \StrGobbleRight{#1}{1}\cyri}% \case{G}{#1} не працює тут
+      {\cyrk\cyru\cyrl\cyrsftsn\cyrt\cyru\cyrr\cyro\cyrl\cyro\cyrg\cyrii\cyrya}% культурологія
+      {\cyrv\cyrii\cyrd\ \StrGobbleRight{#1}{1}\cyryi}%
+      {\cyrm\cyri\cyrs\cyrt\cyre\cyrc\cyrt\cyrv\cyro\cyrz\cyrn\cyra\cyrv\cyrs\cyrt\cyrv\cyro}% мистецтвознавство
+      {\cyrv\cyrii\cyrd\ \StrGobbleRight{#1}{1}\cyra}%
+      {\cyrd\cyre\cyrr\cyrzh\cyra\cyrv\cyrn\cyre\space
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyrii\cyrn\cyrn\cyrya}% державне управління
+      {\cyrn\cyra\cyru\cyrk\ \cyrv\cyrii\cyrd\
+        \cyrd\cyre\cyrr\cyrzh\cyra\cyrv\cyrn\cyro\cyrg\cyro\
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyrii\cyrn\cyrn\cyrya}%
+      {\cyrs\cyru\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyre\space
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyrii\cyrn\cyrn\cyrya}% суверенне управління (kivi)
+      {\cyrn\cyra\cyru\cyrk\ \cyrv\cyrii\cyrd\
+        \cyrs\cyru\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyro\cyrg\cyro\
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyrii\cyrn\cyrn\cyrya}%
+      {\cyrf\cyrii\cyrz\cyri\cyrch\cyrn\cyre\space
+        \cyrv\cyri\cyrh\cyro\cyrv\cyra\cyrn\cyrn\cyrya\space
+        \cyrii\space
+        \cyrs\cyrp\cyro\cyrr\cyrt}% фізичне виховання і спорт
+      {\cyrn\cyra\cyru\cyrk\ \cyrv\cyrii\cyrd\
+        \cyrf\cyrii\cyrz\cyri\cyrch\cyrn\cyro\cyrg\cyro\
+        \cyrv\cyri\cyrh\cyro\cyrv\cyra\cyrn\cyrn\cyrya\
+        \cyrii\
+        \cyrs\cyrp\cyro\cyrr\cyrt\cyru}%
+      {\cyrs\cyro\cyrc\cyrii\cyra\cyrl\cyrsftsn\cyrn\cyrii\space
+        \cyrk\cyro\cyrm\cyru\cyrn\cyrii\cyrk\cyra\cyrc\cyrii\cyryi}% соціальні комунікації
+      {\cyrn\cyra\cyru\cyrk\ \cyrv\cyrii\cyrd\
+        \cyrs\cyro\cyrc\cyrii\cyra\cyrl\cyrsftsn\cyrn\cyri\cyrh\
+        \cyrk\cyro\cyrm\cyru\cyrn\cyrii\cyrk\cyra\cyrc\cyrii\cyrishrt}%
+    }%
+    [#1]%
+  }%
+}
+\def\degreefield@tf@russian#1{%
+  \IfEndWith{#1}{\cyrk\cyri\cyre}{% FIXME: тут треба перевіряти три букви (а не одну), щоб відокремити випадки искусствоведение і государственное управление; але випадають ветеринарные тощо (це не критично, тому зроблю колись)
+    \cyro\cyrt\ \StrGobbleRight{#1}{1}\cyrh\ \cyrn\cyra\cyru\cyrk
+    % \case[adjective]{G}{#1} наук% не працює тут
+  }{%
+    \IfStrEqCase{#1}{%
+      {\cyra\cyrr\cyrh\cyri\cyrt\cyre\cyrk\cyrt\cyru\cyrr\cyra}% архитектура
+      {\cyro\cyrt\ \StrGobbleRight{#1}{1}\cyrery}% \case{G}{#1} не працює тут
+      {\cyrk\cyru\cyrl\cyrsftsn\cyrt\cyru\cyrr\cyro\cyrl\cyro\cyrg\cyri\cyrya}% культурология
+      {\cyro\cyrt\ \StrGobbleRight{#1}{1}\cyri}%
+      {\cyri\cyrs\cyrk\cyru\cyrs\cyrs\cyrt\cyrv\cyro\cyrv\cyre\cyrd\cyre\cyrn\cyri\cyre}% искусствоведение% FIXME: не працює, бо закінчується на е, а отже, потрапляє в інший випадок; працює, якщо в першій частині перевіряти три букви
+      {\cyro\cyrt\ \StrGobbleRight{#1}{1}\cyrya}%
+      {\cyrg\cyro\cyrs\cyru\cyrd\cyra\cyrr\cyrs\cyrt\cyrv\cyre\cyrn\cyrn\cyro\cyre\space
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyre}% государственное управление% FIXME: не працює, бо закінчується на е, а отже, потрапляє в інший випадок; працює, якщо в першій частині перевіряти три букви
+      {\cyrn\cyra\cyru\cyrk\ \cyro\cyrt\
+        \cyrg\cyro\cyrs\cyru\cyrd\cyra\cyrr\cyrs\cyrt\cyrv\cyre\cyrn\cyrn\cyro\cyrg\cyro\
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyrya}%
+      {\cyrs\cyru\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyro\cyre\space
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyre}% суверенное управление (kivi)
+      {\cyrn\cyra\cyru\cyrk\ \cyro\cyrt\
+        \cyrs\cyru\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyro\cyrg\cyro\
+        \cyru\cyrp\cyrr\cyra\cyrv\cyrl\cyre\cyrn\cyri\cyrya}%
+      {\cyrf\cyri\cyrz\cyri\cyrch\cyre\cyrs\cyrk\cyro\cyre\space
+        \cyrv\cyro\cyrs\cyrp\cyri\cyrt\cyra\cyrn\cyri\cyre\space
+        \cyri\space
+        \cyrs\cyrp\cyro\cyrr\cyrt}% физическое воспитание и спорт
+      {\cyrn\cyra\cyru\cyrk\ \cyro\cyrt\
+        \cyrf\cyri\cyrz\cyri\cyrch\cyre\cyrs\cyrk\cyro\cyrg\cyro\
+        \cyrv\cyro\cyrs\cyrp\cyri\cyrt\cyra\cyrn\cyri\cyrya\
+        \cyri\
+        \cyrs\cyrp\cyro\cyrr\cyrt\cyra}%
+      {\cyrs\cyro\cyrc\cyri\cyra\cyrl\cyrsftsn\cyrn\cyrery\cyre\space
+        \cyrk\cyro\cyrm\cyrm\cyru\cyrn\cyri\cyrk\cyra\cyrc\cyri\cyri}% социальные коммуникации
+      {\cyrn\cyra\cyru\cyrk\ \cyro\cyrt\
+        \cyrs\cyro\cyrc\cyri\cyra\cyrl\cyrsftsn\cyrn\cyrery\cyrh\
+        \cyrk\cyro\cyrm\cyrm\cyru\cyrn\cyri\cyrk\cyra\cyrc\cyri\cyrishrt}%
+    }%
+    [#1]%
+  }%
+}
+\def\degreefield@tf@english#1{%
+  \IfStrEqCase{#1}{%
+    {architecture}% архітектура
+    {from the #1}%
+    {culturology}% культурологія
+    {from the #1}%
+    {art history}% мистецтвознавство
+    {from the #1}%
+    {public administration}% державне управління
+    {of sciences from the #1}%
+    {sovereign administration}% суверенне управління (kivi)
+    {of sciences from the #1}%
+    {physical education and sport}% фізичне виховання і спорт
+    {of sciences from the #1}%
+    {social communication}% соціальні комунікації
+    {of sciences from the #1}%
+  }%
+  [from the #1 sciences]%
+}
+\def\@maketitle{%
+  \set@institutions
+  \vspace{\stretch{3}}%
+  {\raggedleft
+    \parbox[b]{165pt}{\raggedright\manuscriptname}%
+    \par}%
+  \vspace{\stretch{2}}%
+  {\bfseries\expandafter\expandafter\expandafter\emphsurname\csname @author@\languagename\endcsname \par}%
+  \vspace{\stretch{2}}%
+  {\raggedleft
+    \@ifundefined{@secret}{}{%
+      \@secret\\
+      \CYRP\cyrr\cyri\cyrm.~\No~\placeholder[5mm]\\}
+    \CYRU\CYRD\CYRK\ \@udc \par}%
+  \vspace{\stretch{1}}%
+  {\bfseries\scshape\CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrya\par}
+  {\large\bfseries\scshape \csname @title@\languagename\endcsname \par}%
+  \vspace{\stretch{1}}%
+  \set@speciality\par
+  \vspace{\stretch{1}}%
+  % Подається за здоров'я наукового рівня
+  \CYRP\cyro\cyrd\cyra\cyrie\cyrt\cyrsftsn\cyrs\cyrya\
+  \cyrz\cyra\ \cyrz\cyrd\cyro\cyrr\cyro\cyrv'\cyrya\
+  \cyrn\cyra\cyru\cyrk\cyro\cyrv\cyro\cyrg\cyro\
+  \cyrr\cyrii\cyrv\cyrn\cyrya\\
+  \set@degree\par
+  \end{center}
+  \vspace{\stretch{2}}%
+  {\small% Це не основний текст для титульного аркуша, тому зменшимо.
+    % Дисертація містить результати власних досліджень.
+    \CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrya\
+    \cyrm\cyrii\cyrs\cyrt\cyri\cyrt\cyrsftsn\
+    \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyri\
+    \cyrv\cyrl\cyra\cyrs\cyrn\cyri\cyrh\
+    \cyrd\cyro\cyrs\cyrl\cyrii\cyrd\cyrzh\cyre\cyrn\cyrsftsn.
+    % Використання ідей, результатів і текстів інших авторів мають посилання на відповідне джерело
+    \CYRV\cyri\cyrk\cyro\cyrr\cyri\cyrs\cyrt\cyra\cyrn\cyrn\cyrya\
+    \cyrii\cyrd\cyre\cyrishrt,
+    \cyrr\cyre\cyrz\cyru\cyrl\cyrsftsn\cyrt\cyra\cyrt\cyrii\cyrv\
+    \cyrii~%
+    \cyrt\cyre\cyrk\cyrs\cyrt\cyrii\cyrv\
+    \cyrii\cyrn\cyrsh\cyri\cyrh\
+    \cyrf\cyrr\cyru\cyrk\cyrt\cyrii\cyrv\
+    \cyrm\cyra\cyryu\cyrt\cyrsftsn\
+    \cyrp\cyro\cyrs\cyri\cyrl\cyra\cyrn\cyrn\cyrya\
+    \cyrn\cyra\
+    \cyrv\cyrii\cyrd\cyrp\cyro\cyrv\cyrii\cyrd\cyrn\cyre\
+    \cyrd\cyrzh\cyre\cyrr\cyre\cyrl\cyro.\par
+    \medskip
+    \raggedleft
+    \ifcsname author@signature\endcsname
+      \begin{picture}(0,0)
+        \csname author@signature\endcsname
+      \end{picture}
+    \else
+      \placeholder[25mm]
+    \fi
+    \csname @shortauthor@\languagename\endcsname\par}
+  \vspace{\stretch{2}}%
+  {%
+   \let\\\@format@person
+   \ifcsname @supervisors@\languagename\endcsname
+     \begin{listofpersons}{\csname @supervisors@caption@\languagename\endcsname}
+       \csname @supervisors@\languagename\endcsname\relax
+     \end{listofpersons}
+   \fi
+  }%
+  \vspace{\stretch{3}}%
+  \begin{center}
+  \csname @towni@\languagename\endcsname\ --- \@year}
+\def\@makecover{%
+  \set@institutions
+  \vspace{\stretch{3}}%
+  {\bfseries\expandafter\expandafter\expandafter\emphsurname\csname @author@\languagename\endcsname
+  \ifcsname author@signature\endcsname
+    \begin{picture}(0,0)
+      \csname author@signature\endcsname
+    \end{picture}
+  \fi
+  \par}%
+  \vspace{\stretch{2}}%
+  {\raggedleft \CYRU\CYRD\CYRK\ \@udc \par}%
+  \vspace{\stretch{1}}%
+  {\large\bfseries\scshape \csname @title@\languagename\endcsname \par}%
+  \vspace{\stretch{2}}%
+  \set@speciality\par
+  \vspace{\stretch{3}}%
+  \CYRA\cyrv\cyrt\cyro\cyrr\cyre\cyrf\cyre\cyrr\cyra\cyrt\linebreak[1]%
+  \cyrd\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyryi\
+    \cyrz\cyra\ \cyrz\cyrd\cyro\cyrr\cyro\cyrv'\cyrya\
+    \cyrn\cyra\cyru\cyrk\cyro\cyrv\cyro\cyrg\cyro\
+    \cyrr\cyrii\cyrv\cyrn\cyrya\linebreak[1]%
+    \set@degree\par
+  \vspace{\stretch{3}}%
+  \ifcsname @council@town@\languagename\endcsname
+    \csname @council@town@\languagename\endcsname
+  \else
+    \csname @towni@\languagename\endcsname
+  \fi
+  \ --- \@year}
+\AtBeginDocument{%
+\addto\captionsenglish{%
+  \def\set@thesisdescription{%
+    Dissertation to the health of the science level of the \set@degree\
+    for special \set@abstract@speciality
+  }%
+}
+\addto\captionsrussian{%
+  \def\set@thesisdescription{%
+    % Дисcертация за здоровье научного уровня
+    % кандидата от педагогических наук (доктора философии)
+    \CYRD\cyri\cyrs\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyri\cyrya\
+    \cyrz\cyra\
+    \cyrz\cyrd\cyro\cyrr\cyro\cyrv\cyrsftsn\cyre\
+    \cyrn\cyra\cyru\cyrch\cyrn\cyro\cyrg\cyro\
+    \cyru\cyrr\cyro\cyrv\cyrn\cyrya\
+    \set@degree\
+    \cyrd\cyrl\cyrya\
+    \cyrs\cyrp\cyre\cyrc\cyri\cyra\cyrl\cyri\cyrt\cyre\cyrt\cyra\
+    \set@abstract@speciality
+  }%
+}
+\addto\captionsukrainian{%
+  \def\set@thesisdescription{%
+    % Дисертація за здоров'я наукового рівня
+    % кандидата від педагогічних наук (доктора від філософії)
+    \CYRD\cyri\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyrii\cyrya\
+    \cyrz\cyra\
+    \cyrz\cyrd\cyro\cyrr\cyro\cyrv'\cyrya\
+    \cyrn\cyra\cyru\cyrk\cyro\cyrv\cyro\cyrg\cyro\
+    \cyrr\cyrii\cyrv\cyrn\cyrya\
+    \set@degree\
+    \cyrd\cyrl\cyrya\
+    \cyrs\cyrp\cyre\cyrc\cyrii\cyra\cyrl\cyrii\cyrt\cyre\cyrt\cyru\
+    \set@abstract@speciality
+  }%
+}
+}
+\endinput
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Local Variables:
+% mode: latex
+% coding: windows-1251-dos
+% End:

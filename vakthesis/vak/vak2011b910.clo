@@ -1,0 +1,31 @@
+%%
+%% This is file `vak2011b910.clo',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% vakthesis.dtx  (with options: `vak2011b910')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from vak2011b910.clo.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file vakthesis.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+\ProvidesFile{vak2011b910.clo}
+  [2021/07/21 v0.09
+   Guide option for vakthesis (OMB)]
+\def\@seccntformat#1{\csname the#1\endcsname\enskip}
+\def\@lost@Asbuk#1{\@Asbuk{#1}}
+\def\numberline#1{\hb@xt@\@tempdima{\mdseries#1\hfil}}
+\endinput
+%%
+%% End of file `vak2011b910.clo'.
