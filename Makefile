@@ -18,7 +18,7 @@ vak-adopt:
 		cat .res/vakthesis_preamble >> vakthesis/vak/README.md; \
 		tail -n +5 /tmp/.mondev/unpack/vak/README | iconv -f CP1251 -t UTF8 >> vakthesis/vak/README.md
 	# convert files
-	for i in `ls $(TMPDIR)/unpack/vak/ | grep -vE 'README|*.pdf'`; do \
+	for i in `ls $(TMPDIR)/unpack/vak/ | grep -vE 'README|*.pdf|*.ins|*.dtx'`; do \
 		dos2unix $(TMPDIR)/unpack/vak/$$i; \
 		iconv -f CP1251 -t UTF8 $(TMPDIR)/unpack/vak/$$i > vakthesis/vak/$$i; \
 	done
@@ -27,7 +27,7 @@ vak-adopt:
 	wget -q -O- https://www.imath.kiev.ua/~baranovskyi/tex/vakthesis/ | iconv -f CP1251 -t UTF8 | pandoc --from=html --to=plain > vakthesis/NEWS.md
 
 	# generate documentation
-	cd $(TMPDIR)/unpack/vak && latex vakthesis.dtx
+	cd $(TMPDIR)/unpack/vak && pdflatex vakthesis.dtx
 	mkdir -p vakthesis/vak/doc && cp $(TMPDIR)/unpack/vak/*.pdf vakthesis/vak/doc
 	rm -rf $(TMPDIR)
 
