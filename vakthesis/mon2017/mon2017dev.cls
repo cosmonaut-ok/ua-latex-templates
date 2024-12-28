@@ -2,7 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{mon2017dev}
-  [2021/07/21 v0.09 vakthesis support document class (OMB)]
+  [2024/03/03 v0.10 vakthesis support document class (OMB)]
 % Означення опцій
 \RequirePackage{xkeyval}
 % Тип дисертації

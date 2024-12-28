@@ -74,10 +74,56 @@
 
 \nocite{Bar98fasp1,Bar98fasp2,PrB01umc}
 
+% Рекомендований перелік стилів оформлення списку наукових публікацій
+% Додаток 3 до Вимог до оформлення дисертації (пункт 11 розділу ІІІ)
+% https://zakon.rada.gov.ua/go/z0155-17
+
+% ------------------------------------------------------------------------------
+% Стиль оформлення		BibTeX-стиль		Джерело
+% списку наукових публікацій
+% ------------------------------------------------------------------------------
+% ДСТУ 8302:2015		dstu2015*		https://codeberg.org/mdmisch/dstu
+% 				gost2008*		https://ctan.org/pkg/gost
+% MLA (Modern Language		mla			https://ctan.org/pkg/mla
+%   Association)
+% APA (American Psychological	apalike			https://ctan.org/pkg/bibtex
+%   Association)[1][2]		apacite			https://ctan.org/pkg/apacite
+% Chicago/Turabian[1]		achicago		https://ctan.org/pkg/achicago-bst
+% Harvard[1]			[3]			https://ctan.org/pkg/harvard
+% ACS (American			achemso/biochem		https://ctan.org/pkg/achemso
+%   Chemical Society)
+% AIP (American			aipauth4-2/aipnum4-2	https://ctan.org/pkg/revtex
+%   Institute of Physics)
+% IEEE (Institute of Electrical	ieeetr			https://ctan.org/pkg/bibtex
+%   and Electronics Engineers)	IEEEtran*		https://ctan.org/pkg/ieeetran
+% Vancouver[1]			[3]			https://ctan.org/pkg/vancouver
+% OSCOLA			???
+% APS (American			apsrev4-2/apsrmp4-2	https://ctan.org/pkg/revtex
+%   Physical Society)[1]
+% Springer MathPhys[1]		spmpsci			https://resource-cms.springernature.com/springer-cms/rest/v1/content/25980412/data/v2
+% ------------------------------------------------------------------------------
+
+% [1] Оригінальне гіперпосилання в додатку 3 вже недоступне.
+% Інструкції від Springer щодо підготовки рукописів
+% (зокрема щодо оформлення списку посилань) тепер на цій сторінці:
+% https://www.springer.com/gp/authors-editors/book-authors-editors/your-publication-journey/manuscript-preparation
+% [2] Оригінальне гіперпосилання в додатку 3 вже переадресовує на іншу сторінку.
+% Інструкції від Elsevier щодо оформлення списку посилань
+% у журналі «Learning and Instruction» тепер доступні тут:
+% https://www.sciencedirect.com/journal/learning-and-instruction/publish/guide-for-authors#68000
+% [3] Harvard і Vancouver — це радше системи оформлення посилань
+% (у текстовій і числовій формі відповідно),
+% ніж конкретні стилі оформлення списку наукових публікацій.
+% Але на CTAN є пакунки з такими іменами, які містять кілька BibTeX-стилів.
+% Можливо, вони будуть корисні у зв'язку з рекомендаціями додатку 3.
+
+% Корисний огляд різноманітних BibTeX-стилів від Reed College:
+% https://www.reed.edu/it/help/LaTeX/bibtexstyles.html
+
 \begin{bibset}% [a]
   {Список публікацій здобувача за~темою~дисертації}
   % {Список публікацій здобувача}
-  \bibliographystyle{gost2008}
+  \bibliographystyle{ieeetr}% або інший BibTeX-стиль, наприклад, gost2008
   %
   % Якщо не треба нумерація з крапкою, можна закоментувати наступні три рядки.
   \makeatletter
@@ -85,3 +131,23 @@
   \makeatother
   \bibliography{xampl-mybib}
 \end{bibset}
+
+% УВАГА!
+
+% Автоматичне копіювання списку публікацій здобувача з анотації в додаток
+% працює тільки тоді, коли цей список генерується засобами BibTeX з бази даних.
+% Тоді BibTeX створює спеціальний .bbl-файл,
+% який LaTeX спочатку включає до анотації, а потім — до додатка.
+
+% Якщо список публікацій здобувача створено вручну
+% (у вигляді стандартного оточення thebibliography),
+% його треба винести в окремий .bbl-файл зі спеціальним іменем.
+% Якщо mon2017dev.tex — головний файл дисертації,
+% то цей файл має називатися mon2017dev1.bbl.
+% Тоді автоматичне копіювання теж працюватиме.
+
+% У файлі анотації (mon2017dev-abs.tex)
+% достатньо залишити оточення bibset у такому вигляді, як у зразку.
+% У файлі додатку (mon2017dev-app1.tex)
+% достатньо залишити команду \repeatauthorpublications.
+% Тобто нічого не змінювати в цих файлах.
